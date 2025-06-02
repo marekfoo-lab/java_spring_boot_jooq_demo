@@ -1,0 +1,7 @@
+/.idea/
+/.gradle/
+/build/
+/data/devdb.mv.db
+/gradle/
+/gradlew
+/gradlew.bat
