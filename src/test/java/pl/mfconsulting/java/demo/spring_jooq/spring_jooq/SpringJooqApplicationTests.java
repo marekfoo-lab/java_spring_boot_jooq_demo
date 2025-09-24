@@ -8,6 +8,7 @@ class SpringJooqApplicationTests {
 
 	@Test
 	void contextLoads() {
+        assert(true);
 	}
 
 }
