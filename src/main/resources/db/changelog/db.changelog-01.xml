@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+    <changeSet id="1" author="user">
+        <createSequence sequenceName="account_id_seq" startValue="1" incrementBy="1"/>
+        <createTable tableName="account">
+            <column name="id" type="int" defaultValueComputed="nextval('account_id_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="varchar(50)"/>
+            <column name="last_name" type="varchar(70)"/>
+            <column name="password" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(60)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="user" dbms="postgresql">
+        <sql>
+            ALTER SEQUENCE account_id_seq OWNED BY account.id
+        </sql>
+    </changeSet>
+</databaseChangeLog>

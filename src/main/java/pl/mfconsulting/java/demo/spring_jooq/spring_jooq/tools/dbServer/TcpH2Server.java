@@ -2,13 +2,10 @@ package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import org.h2.tools.Server;
 import org.springframework.stereotype.Component;
 
-import org.h2.tools.Server;
-
 import java.sql.SQLException;
-
-
 
 @Component
 public class TcpH2Server {
@@ -33,7 +30,4 @@ public class TcpH2Server {
             System.out.println("H2 TCP server stopped");
         }
     }
-
-
-
 }
