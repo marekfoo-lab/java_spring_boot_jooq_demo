@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.liquibase.gradle' version '2.2.2'
+    id 'org.jooq.jooq-codegen-gradle' version '3.20.7'
 }
 
 group = 'pl.mfconsulting.java.demo.spring-jooq'
@@ -26,6 +27,10 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation 'org.liquibase:liquibase-core'
 
+    jooqCodegen 'org.jooq:jooq-meta'
+    jooqCodegen 'org.jooq:jooq-codegen'
+    jooqCodegen 'org.postgresql:postgresql'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
@@ -40,7 +45,7 @@ tasks.named('test') {
 }
 
 clean.doFirst {
-	file('data/devdb.mv.db').delete()
+    file('data/devdb.mv.db').delete()
     file('data/devdb.trace.db').delete()
 }
 
@@ -51,6 +56,37 @@ liquibase {
             url 'jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL'
             username 'sa'
             password ''
+        }
+    }
+}
+
+jooq {
+    version = '3.20.7'
+    configurations {
+        main {
+            generationTool {
+                jdbc {
+//                    driver = 'org.postgresql.Driver'
+//                    url = 'jdbc:postgresql://localhost:5432/mojabaza'
+//                    user = 'admin'
+//                    password = 'password'
+                    driver = org.h2.Driver
+                    url 'jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL'
+                    user 'sa'
+                    password ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        inputSchema = 'public'
+                        includes = '.*' // Generate code for all tables
+                    }
+                    target {
+                        packageName = 'pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated'
+                        directory = 'target/generated-sources/jooq'
+                    }
+                }
+            }
         }
     }
 }

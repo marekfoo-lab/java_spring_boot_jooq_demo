@@ -7,3 +7,7 @@ http://localhost:8080/h2-console
 JDBC URL: jdbc:h2:mem:devdb
 User: sa
 Password:
+
+### Jooq
+To generate code:
+./gradlew generateJooq
