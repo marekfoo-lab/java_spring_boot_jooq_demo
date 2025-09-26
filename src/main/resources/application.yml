@@ -13,6 +13,10 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+#    url: jdbc:postgresql://localhost:5432/simba_db
+#    driver-class-name: org.postgresql.Driver
+#    username: simba_user
+#    password: simba_user
   jooq:
     sql-dialect: postgres
   h2:
