@@ -4,10 +4,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
-    <changeSet id="1" author="user">
+    <changeSet id="092524-01" author="marekfoo-lab">
         <createSequence sequenceName="account_id_seq" startValue="1" incrementBy="1"/>
         <createTable tableName="account">
-            <column name="id" type="int" defaultValueComputed="nextval('account_id_seq')">
+            <column name="id" type="int" autoIncrement="false" defaultValueComputed="nextval('account_id_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="login" type="varchar(30)">
@@ -23,9 +23,109 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="2" author="user" dbms="postgresql">
-        <sql>
-            ALTER SEQUENCE account_id_seq OWNED BY account.id
-        </sql>
+
+    <changeSet id="092524-03" author="marekfoo-lab">
+        <createSequence sequenceName="ADDRESS_ID_SEQ" startValue="1" incrementBy="1"/>
+        <createTable tableName="ADDRESS">
+            <column name="id" type="int" autoIncrement="false" defaultValueComputed="nextval('ADDRESS_ID_SEQ')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="STREET" type="varchar(70)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ZIP_CODE" type="varchar(10)"/>
+            <column name="CITY" type="varchar(70)"/>
+            <column name="ADDRESS_TYPE" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
+
+    <changeSet id="092524-05" author="marekfoo-lab">
+        <addForeignKeyConstraint
+                baseTableName="ADDRESS"
+                baseColumnNames="ACCOUNT_ID"
+                referencedTableName="ACCOUNT"
+                referencedColumnNames="ID"
+                constraintName="FK_ADDRESS_ACCOUNT"/>
+    </changeSet>
+
+    <changeSet id="092524-06" author="marekfoo-lab">
+        <addUniqueConstraint
+                tableName="ADDRESS"
+                columnNames="ACCOUNT_ID, ADDRESS_TYPE"
+                constraintName="UQ_ADDRESS_TYPE_ACCOUNT"/>
+    </changeSet>
+
+    <changeSet id="092524-07" author="marekfoo-lab">
+        <createSequence sequenceName="ROLE_ID_SEQ" startValue="1" incrementBy="1"/>
+        <createTable tableName="ROLE">
+            <column name="ID" type="int" autoIncrement="false" defaultValueComputed="nextval('ROLE_ID_SEQ')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NAME" type="varchar(30)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="092524-08" author="marekfoo-lab">
+        <createTable tableName="ROLE_ACCOUNT">
+            <column name="ROLE_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACCOUNT_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="092524-09" author="marekfoo-lab">
+        <addPrimaryKey columnNames="ROLE_ID, ACCOUNT_ID"
+                       constraintName="PK_ROLE_ACCOUNT"
+                       tableName="ROLE_ACCOUNT"/>
+    </changeSet>
+
+    <changeSet id="092524-10" author="marekfoo-lab">
+        <addForeignKeyConstraint
+                baseTableName="ROLE_ACCOUNT"
+                baseColumnNames="ROLE_ID"
+                referencedTableName="ROLE"
+                referencedColumnNames="ID"
+                constraintName="FK_ROLE_ACCOUNT_ROLE"/>
+    </changeSet>
+
+    <changeSet id="092524-11" author="marekfoo-lab">
+        <createSequence sequenceName="LOGIN_HISTORY_ID_SEQ" startValue="1" incrementBy="1"/>
+        <createTable tableName="LOGIN_HISTORY">
+            <column name="ID" type="int" autoIncrement="false" defaultValueComputed="nextval('LOGIN_HISTORY_ID_SEQ')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ACCOUNT_ID" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_LOGIN" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IP_ADDRESS" type="varchar(39)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="IS_SUCCESS" type="varchar(1)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="092524-12" author="marekfoo-lab">
+        <addForeignKeyConstraint
+                baseTableName="LOGIN_HISTORY"
+                baseColumnNames="ACCOUNT_ID"
+                referencedTableName="ACCOUNT"
+                referencedColumnNames="ID"
+                constraintName="FK_LOGIN_HISTORY_ACCOUNT"/>
+    </changeSet>
+
 </databaseChangeLog>
