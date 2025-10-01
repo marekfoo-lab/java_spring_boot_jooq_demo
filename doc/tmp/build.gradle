@@ -1,0 +1,116 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.liquibase.gradle' version '2.2.2'
+
+    // POPRAWKA: Zmiana wersji na stabilną 7.0, aby uniknąć problemów z resolwacją
+    id 'nu.studer.jooq' version '7.0'
+    // Usunięto: id 'org.jooq.jooq-codegen-gradle' version '3.20.7'
+}
+
+group = 'pl.mfconsulting.java.demo.spring-jooq'
+version = '0.0.1-SNAPSHOT'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    // Usunięto: Ręczna definicja konfiguracji jooqRuntime - wtyczka Studera to zrobi za nas
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'com.h2database:h2'
+    implementation 'org.liquibase:liquibase-core'
+
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Zmieniono: Powrót do standardowego nazewnictwa wtyczki Studera: jooqCodegen
+    jooqCodegen 'org.jooq:jooq-meta'
+    jooqCodegen 'org.jooq:jooq-codegen'
+    jooqCodegen 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// -----------------------------------------------------------------
+// KONFIGURACJA ZADAŃ I ZALEŻNOŚCI
+// -----------------------------------------------------------------
+
+// Powiązanie kompilacji z generowaniem kodu
+tasks.named("compileJava") {
+    // Zmieniono: Prawidłowa nazwa zadania dla konfiguracji 'main'
+    dependsOn(tasks.named("generateMainJooq"))
+}
+
+// -----------------------------------------------------------------
+// LIQUIBASE I JOOQ CONFIGURATION
+// -----------------------------------------------------------------
+
+clean.doFirst {
+    file('data/devdb.mv.db').delete()
+    file('data/devdb.trace.db').delete()
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yml'
+            url 'jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL'
+            username 'sa'
+            password ''
+        }
+    }
+}
+
+// Przywrócono: Prawidłowa struktura dla wtyczki nu.studer.jooq
+jooq {
+    configurations {
+        main {
+            // Uruchomienie Liquibase przed generowaniem kodu
+            dependencies {
+                // To jest prawidłowy sposób na zależność od zadania Liquibase
+                dependsOn(tasks.named('mainUpdate'))
+            }
+            generationTool {
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        inputSchema = "public"
+                        includes = '.*'
+                    }
+                    target {
+                        packageName = 'pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated'
+                        directory = 'target/generated-sources/jooq'
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

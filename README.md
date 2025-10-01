@@ -10,4 +10,12 @@ Password:
 
 ### Jooq
 To generate code:
+./gradlew --stop
+./gradlew clean generateJooq
 ./gradlew generateJooq
+
+
+//                    driver = 'org.postgresql.Driver'
+//                    url = 'jdbc:postgresql://localhost:5432/mojabaza'
+//                    user = 'admin'
+//                    password = 'password'
