@@ -181,6 +181,28 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.codehaus.mojo</groupId>-->
+            <!--                <artifactId>exec-maven-plugin</artifactId>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>run-tcp-h2-server</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>java</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer.TcpH2Server</mainClass>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer.TcpH2Server</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

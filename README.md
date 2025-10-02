@@ -9,6 +9,9 @@ User: sa
 Password:
 
 ### Jooq
+mvn clean compile exec:java jooq-code:generate
+
+
 To generate code:
 ./gradlew --stop
 ./gradlew clean generateJooq

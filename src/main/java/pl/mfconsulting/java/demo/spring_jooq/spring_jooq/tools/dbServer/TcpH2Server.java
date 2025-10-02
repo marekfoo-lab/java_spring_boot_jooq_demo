@@ -1,18 +1,25 @@
 package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;
-import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
 
-@Component
+@Slf4j
 public class TcpH2Server {
-
     private Server tcpServer;
 
-    @PostConstruct
+    public static void main(String[] args) {
+        TcpH2Server server = new TcpH2Server();
+        try {
+            server.start();
+            //Keep server running
+            Thread.currentThread().join();
+        } catch (SQLException | InterruptedException e) {
+            log.error("Error has been thrown", e);
+        }
+    }
+
     public void start() throws SQLException {
         this.tcpServer = Server.createTcpServer(
                 "-tcpPort", "9123",
@@ -20,14 +27,13 @@ public class TcpH2Server {
                 "-ifNotExists"
         ).start();
 
-        System.out.println("H2 TCP server started on port 9123");
+        log.info("H2 TCP server started on port: 9123");
     }
 
-    @PreDestroy
     public void stop() {
         if (tcpServer != null) {
             tcpServer.stop();
-            System.out.println("H2 TCP server stopped");
+            log.info("H2 TCP server stopped!");
         }
     }
 }
