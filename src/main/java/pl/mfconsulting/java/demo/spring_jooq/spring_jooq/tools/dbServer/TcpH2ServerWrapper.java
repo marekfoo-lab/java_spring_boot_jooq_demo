@@ -19,12 +19,9 @@ public class TcpH2ServerWrapper {
         this.tcpServer = new TcpH2Server();
     }
 
-
     @PostConstruct
     public void start() throws SQLException {
         tcpServer.start();
-
-        log.info("H2 TCP server started on port: 9123");
     }
 
     @PreDestroy
