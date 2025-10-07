@@ -35,7 +35,7 @@ To generate code:
     - mvn exec:java (separate module)
 - liquibase -> db scheme -> on demand, not when app starts!
 - compilation -> jooq class generation: db has to be on! 
-
+  
 When App starts, then DB starts together -> OK
 
 Start only DB -> OK
