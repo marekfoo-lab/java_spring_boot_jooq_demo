@@ -10,6 +10,8 @@ Password:
 
 ### Jooq
 mvn clean compile exec:java jooq-code:generate
+mvn clean compile jooq-code:generate
+mvn clean generate-sources
 
 
 To generate code:

@@ -8,7 +8,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>pl.mfconsulting.java.demo.spring-jooq</groupId>
@@ -19,8 +19,13 @@
 
     <properties>
         <java.version>21</java.version>
-        <jooq.version>3.20.7</jooq.version>
-        <liquibase.version>4.31.0</liquibase.version>
+        <jooq.version>3.20.8</jooq.version>
+        <liquibase.version>5.0.0</liquibase.version>
+        <h2.version>2.4.240</h2.version>
+        <maven.clean.version>3.5.0</maven.clean.version>
+        <maven.exec.version>3.6.0</maven.exec.version>
+        <spring.maven.plugin.version>3.5.6</spring.maven.plugin.version>
+        <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
     <dependencies>
@@ -36,12 +41,14 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
 
         <!-- Database Driver (H2) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
         </dependency>
 
         <!-- Utilities -->
@@ -49,6 +56,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.version}</version>
         </dependency>
 
         <!-- Development Tools -->
@@ -73,6 +86,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.maven.plugin.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>
@@ -82,10 +96,11 @@
                     </excludes>
                 </configuration>
             </plugin>
+           
             <!-- clean up -->
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
+                <version>${maven.clean.version}</version>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -112,8 +127,9 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.31.0</version>
+                <version>${liquibase.version}</version>
                 <configuration>
+                    <skip>true</skip>
                     <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
                     <url>jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL</url>
                     <username>sa</username>
@@ -164,6 +180,12 @@
                             <packageName>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated</packageName>
                             <directory>target/generated-sources/jooq</directory>
                         </target>
+                        <generate>
+                            <pojos>true</pojos>
+                            <daos>true</daos>
+                            <interfaces>true</interfaces>
+                            <fluentSetters>true</fluentSetters>
+                        </generate>
                     </generator>
                     <!-- Konfiguracja JDBC jest brana z Liquibase, ale dla jasności jest powtórzona -->
                     <jdbc>
@@ -181,26 +203,14 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <!--            <plugin>-->
-            <!--                <groupId>org.codehaus.mojo</groupId>-->
-            <!--                <artifactId>exec-maven-plugin</artifactId>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>run-tcp-h2-server</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>java</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer.TcpH2Server</mainClass>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>${maven.exec.version}</version>
                 <configuration>
                     <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer.TcpH2Server</mainClass>
+                    <includeProjectDependencies>true</includeProjectDependencies>
+                    <includePluginDependencies>false</includePluginDependencies>
                 </configuration>
             </plugin>
         </plugins>
