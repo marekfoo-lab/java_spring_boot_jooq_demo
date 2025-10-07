@@ -3,7 +3,7 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.31.xsd">
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd">
     <changeSet id="092525-01" author="marekfoo-lab">
         <sql>
             INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES (1,'login1', 'hotname',

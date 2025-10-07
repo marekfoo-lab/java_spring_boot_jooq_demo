@@ -9,9 +9,16 @@ User: sa
 Password:
 
 ### Jooq
+mvn liquibase:update
+mvn jooq-codegen:generate
 mvn clean compile exec:java jooq-code:generate
 mvn clean compile jooq-code:generate
-mvn clean generate-sources
+
+### Build package
+Skip compilation of tests:
+mvn clean install -Dmaven.test.skip=true
+Skip execution of tests but not compilation:
+mvn install -DskipTests
 
 
 To generate code:
@@ -19,11 +26,6 @@ To generate code:
 ./gradlew clean generateJooq
 ./gradlew generateJooq
 
-
-//                    driver = 'org.postgresql.Driver'
-//                    url = 'jdbc:postgresql://localhost:5432/mojabaza'
-//                    user = 'admin'
-//                    password = 'password'
 
 ## PROBLEMS
 
@@ -37,5 +39,14 @@ To generate code:
 When App starts, then DB starts together -> OK
 
 Start only DB -> OK
-Liquibase -> NOK - cannot connect
+Liquibase -> OK 
 Compile -> OK
+jooq -> OK
+
+Scenarios: 
+- Starts App: db start, compile, jooq?
+- update db: db start (automatic?), mvn liquibase:update
+- build executable jar: mvn clean install -> ERROR - DB ON,
+When clean, then after it liquibase has to be run to generate schema and on top of that generate classes
+
+src/main/resources/db/changelog/db.changelog-01.xml

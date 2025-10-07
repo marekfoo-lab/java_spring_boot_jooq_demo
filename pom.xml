@@ -129,8 +129,8 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <configuration>
-                    <skip>true</skip>
-                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
+                    <skip>false</skip>
+                    <changeLogFile>src/main/resources/db/master.xml</changeLogFile>
                     <url>jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL</url>
                     <username>sa</username>
                     <password></password>
@@ -173,7 +173,6 @@
                             <inputSchema>PUBLIC</inputSchema>
                             <includes>.*</includes>
                             <excludes>databasechangelog|databasechangeloglock</excludes>
-                            <!-- Ustawienie Type: H2 z emulacją PostgreSQL (ważne!) -->
                             <name>org.jooq.meta.h2.H2Database</name>
                         </database>
                         <target>
@@ -187,7 +186,6 @@
                             <fluentSetters>true</fluentSetters>
                         </generate>
                     </generator>
-                    <!-- Konfiguracja JDBC jest brana z Liquibase, ale dla jasności jest powtórzona -->
                     <jdbc>
                         <driver>org.h2.Driver</driver>
                         <url>jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL</url>
