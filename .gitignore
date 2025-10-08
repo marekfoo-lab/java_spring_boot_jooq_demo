@@ -6,3 +6,4 @@
 /target/
 .vscode/
 /data/devdb.trace.db
+/doc/tmp/gradle_setup/.gradle/
