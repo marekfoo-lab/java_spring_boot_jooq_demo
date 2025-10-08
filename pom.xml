@@ -22,7 +22,9 @@
         <java.version>21</java.version>
         <jooq.version>3.20.8</jooq.version>
         <h2.version>2.4.240</h2.version>
+        <lombok.version>1.18.42</lombok.version>
         <maven.clean.version>3.5.0</maven.clean.version>
+        <liquibase.version>5.0.0</liquibase.version>
         <liquibase.maven.version>5.0.0</liquibase.maven.version>
         <spring.maven.plugin.version>3.5.6</spring.maven.plugin.version>
     </properties>
@@ -55,6 +57,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+            <version>${lombok.version}</version>
         </dependency>
 
         <!-- Jooq dependency -->
