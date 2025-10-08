@@ -132,7 +132,7 @@
                 <version>${liquibase.maven.version}</version>
                 <configuration>
                     <searchPath>src/main/resources</searchPath>
-                    <changeLogFile>db/master.xml</changeLogFile>
+                    <changeLogFile>db/master.yaml</changeLogFile>
                     <driver>org.h2.Driver</driver>
                     <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
                     <username>sa</username>

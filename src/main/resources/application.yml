@@ -3,7 +3,7 @@ spring:
     name: java-spring-jooq
   liquibase: #Needed for spring-boot start
     enabled: false # true when need liquibase start with app
-    change-log: classpath:db/master.xml
+    change-log: classpath:db/master.yaml
     url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
     user: sa
     password:

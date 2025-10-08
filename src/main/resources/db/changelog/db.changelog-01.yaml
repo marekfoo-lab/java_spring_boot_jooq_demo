@@ -1,0 +1,225 @@
+databaseChangeLog:
+
+  # ChangeSet: 092524-01 (Tabela ACCOUNT)
+  - changeSet:
+      id: 092524-01
+      author: marekfoo-lab
+      changes:
+        - createSequence:
+            sequenceName: account_id_seq
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  constraints:
+                    primaryKey: true
+                  defaultValueComputed: "nextval('account_id_seq')"
+              - column:
+                  name: login
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+              - column:
+                  name: last_name
+                  type: VARCHAR(70)
+              - column:
+                  name: password
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(60)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  # ChangeSet: 092524-03 (Tabela ADDRESS)
+  - changeSet:
+      id: 092524-03
+      author: marekfoo-lab
+      changes:
+        - createSequence:
+            sequenceName: ADDRESS_ID_SEQ
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: ADDRESS
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueComputed: "nextval('ADDRESS_ID_SEQ')"
+              - column:
+                  name: STREET
+                  type: VARCHAR(70)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ZIP_CODE
+                  type: VARCHAR(10)
+              - column:
+                  name: CITY
+                  type: VARCHAR(70)
+              - column:
+                  name: ADDRESS_TYPE
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ACCOUNT_ID
+                  type: INT
+                  constraints:
+                    nullable: false
+
+  # ChangeSet: 092524-05 (Klucz Obcy ADDRESS -> ACCOUNT)
+  - changeSet:
+      id: 092524-05
+      author: marekfoo-lab
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: ADDRESS
+            baseColumnNames: ACCOUNT_ID
+            referencedTableName: ACCOUNT
+            referencedColumnNames: ID
+            constraintName: FK_ADDRESS_ACCOUNT
+
+  # ChangeSet: 092524-06 (Unikalność ADDRESS)
+  - changeSet:
+      id: 092524-06
+      author: marekfoo-lab
+      changes:
+        - addUniqueConstraint:
+            tableName: ADDRESS
+            columnNames: ACCOUNT_ID, ADDRESS_TYPE
+            constraintName: UQ_ADDRESS_TYPE_ACCOUNT
+
+  # ChangeSet: 092524-07 (Tabela ROLE)
+  - changeSet:
+      id: 092524-07
+      author: marekfoo-lab
+      changes:
+        - createSequence:
+            sequenceName: ROLE_ID_SEQ
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: ROLE
+            columns:
+              - column:
+                  name: ID
+                  type: INT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueComputed: "nextval('ROLE_ID_SEQ')"
+              - column:
+                  name: NAME
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  # ChangeSet: 092524-08 (Tabela ROLE_ACCOUNT)
+  - changeSet:
+      id: 092524-08
+      author: marekfoo-lab
+      changes:
+        - createTable:
+            tableName: ROLE_ACCOUNT
+            columns:
+              - column:
+                  name: ROLE_ID
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ACCOUNT_ID
+                  type: INT
+                  constraints:
+                    nullable: false
+
+  # ChangeSet: 092524-09 (Klucz Główny ROLE_ACCOUNT)
+  - changeSet:
+      id: 092524-09
+      author: marekfoo-lab
+      changes:
+        - addPrimaryKey:
+            columnNames: ROLE_ID, ACCOUNT_ID
+            constraintName: PK_ROLE_ACCOUNT
+            tableName: ROLE_ACCOUNT
+
+  # ChangeSet: 092524-10 (Klucz Obcy ROLE_ACCOUNT -> ROLE)
+  - changeSet:
+      id: 092524-10
+      author: marekfoo-lab
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: ROLE_ACCOUNT
+            baseColumnNames: ROLE_ID
+            referencedTableName: ROLE
+            referencedColumnNames: ID
+            constraintName: FK_ROLE_ACCOUNT_ROLE
+
+  # ChangeSet: 092524-11 (Tabela LOGIN_HISTORY)
+  - changeSet:
+      id: 092524-11
+      author: marekfoo-lab
+      changes:
+        - createSequence:
+            sequenceName: LOGIN_HISTORY_ID_SEQ
+            startValue: 1
+            incrementBy: 1
+        - createTable:
+            tableName: LOGIN_HISTORY
+            columns:
+              - column:
+                  name: ID
+                  type: INT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueComputed: "nextval('LOGIN_HISTORY_ID_SEQ')"
+              - column:
+                  name: ACCOUNT_ID
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: LAST_LOGIN
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: IP_ADDRESS
+                  type: VARCHAR(39)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: IS_SUCCESS
+                  type: VARCHAR(1)
+                  constraints:
+                    nullable: false
+
+  # ChangeSet: 092524-12 (Klucz Obcy LOGIN_HISTORY -> ACCOUNT)
+  - changeSet:
+      id: 092524-12
+      author: marekfoo-lab
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: LOGIN_HISTORY
+            baseColumnNames: ACCOUNT_ID
+            referencedTableName: ACCOUNT
+            referencedColumnNames: ID
+            constraintName: FK_LOGIN_HISTORY_ACCOUNT
