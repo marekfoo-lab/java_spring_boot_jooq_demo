@@ -13,19 +13,18 @@
 
     <groupId>pl.mfconsulting.java.demo.spring-jooq</groupId>
     <artifactId>spring-jooq-maven-demo</artifactId>
+    <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spring-jooq-liquibase-demo</name>
+    <name>jooq-demo</name>
     <description>Demo project for Spring Boot, jOOQ, and Liquibase using Maven</description>
 
     <properties>
         <java.version>21</java.version>
         <jooq.version>3.20.8</jooq.version>
-        <liquibase.version>5.0.0</liquibase.version>
         <h2.version>2.4.240</h2.version>
         <maven.clean.version>3.5.0</maven.clean.version>
-        <maven.exec.version>3.6.0</maven.exec.version>
+        <liquibase.maven.version>5.0.0</liquibase.maven.version>
         <spring.maven.plugin.version>3.5.6</spring.maven.plugin.version>
-        <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
     <dependencies>
@@ -58,6 +57,7 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Jooq dependency -->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
@@ -81,13 +81,15 @@
     </dependencies>
 
     <build>
+        <finalName>jooq-demo-app</finalName>
+
         <plugins>
-            <!-- 1. Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.maven.plugin.version}</version>
                 <configuration>
+                    <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.SpringJooqApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -96,8 +98,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-           
-            <!-- clean up -->
+
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>${maven.clean.version}</version>
@@ -112,6 +113,7 @@
                             </includes>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
+                        <!-- Usunięcie generowanego kodu jOOQ -->
                         <fileset>
                             <directory>target/generated-sources</directory>
                             <includes>
@@ -123,18 +125,28 @@
                 </configuration>
             </plugin>
 
-            <!-- 2. Liquibase Maven Plugin -->
+            <!-- 4. Liquibase Maven Plugin (Migracja schemy) -->
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>${liquibase.version}</version>
+                <version>${liquibase.maven.version}</version>
                 <configuration>
-                    <skip>false</skip>
-                    <changeLogFile>src/main/resources/db/master.xml</changeLogFile>
-                    <url>jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL</url>
+                    <searchPath>src/main/resources</searchPath>
+                    <changeLogFile>db/master.xml</changeLogFile>
+                    <driver>org.h2.Driver</driver>
+                    <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
                     <username>sa</username>
                     <password></password>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>liquibase-update-database</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>com.h2database</groupId>
@@ -142,18 +154,9 @@
                         <version>${h2.version}</version>
                     </dependency>
                 </dependencies>
-                <executions>
-                    <execution>
-                        <id>liquibase-update</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
-            <!-- 3. jOOQ Code Generation Maven Plugin -->
+            <!-- 5. jOOQ Code Generation Maven Plugin -->
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
@@ -177,7 +180,7 @@
                         </database>
                         <target>
                             <packageName>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated</packageName>
-                            <directory>target/generated-sources/jooq</directory>
+                            <directory>${project.build.directory}/generated-sources/jooq</directory>
                         </target>
                         <generate>
                             <pojos>true</pojos>
@@ -188,7 +191,7 @@
                     </generator>
                     <jdbc>
                         <driver>org.h2.Driver</driver>
-                        <url>jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL</url>
+                        <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
                         <user>sa</user>
                         <password></password>
                     </jdbc>
@@ -200,16 +203,6 @@
                         <version>${h2.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${maven.exec.version}</version>
-                <configuration>
-                    <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer.TcpH2Server</mainClass>
-                    <includeProjectDependencies>true</includeProjectDependencies>
-                    <includePluginDependencies>false</includePluginDependencies>
-                </configuration>
             </plugin>
         </plugins>
     </build>

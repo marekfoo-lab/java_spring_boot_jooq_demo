@@ -5,3 +5,4 @@
 /gradlew.bat
 /target/
 .vscode/
+/data/devdb.trace.db
