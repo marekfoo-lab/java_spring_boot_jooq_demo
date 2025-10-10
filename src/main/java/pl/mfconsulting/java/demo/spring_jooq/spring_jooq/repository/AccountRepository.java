@@ -28,7 +28,6 @@ public class AccountRepository {
                 .where(ACCOUNT.LOGIN.eq(login))
                 .fetchOptional()
                 .map(this::fillAccount);
-
     }
 
     public List<AccountDT> findAll() {
