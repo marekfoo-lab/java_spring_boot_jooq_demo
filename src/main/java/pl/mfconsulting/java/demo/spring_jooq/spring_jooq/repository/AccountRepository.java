@@ -2,7 +2,9 @@ package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.repository;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.Record5;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
@@ -38,12 +40,15 @@ public class AccountRepository {
 
     @Transactional
     public AccountDT create(AccountDT newAccount) {
+        Record1<Long> sequenceResult = context.select(context.nextval(context.nextval("account_id_seq")))
+                .fetchOne();
         return context.insertInto(ACCOUNT)
-                .set(ACCOUNT.LOGIN, newAccount.login())
-                .set(ACCOUNT.FIRST_NAME, newAccount.firstName())
-                .set(ACCOUNT.LAST_NAME, newAccount.lastName())
-                .set(ACCOUNT.EMAIL, newAccount.email())
-                .returningResult(ACCOUNT.ID, ACCOUNT.LOGIN, ACCOUNT.FIRST_NAME, ACCOUNT.LAST_NAME, ACCOUNT.EMAIL)
+                .set(ACCOUNT.ID, seq)
+                .set(ACCOUNT.LOGIN, newAccount.getLogin())
+                .set(ACCOUNT.FIRST_NAME, newAccount.getFirstName())
+                .set(ACCOUNT.LAST_NAME, newAccount.getLastName())
+                .set(ACCOUNT.EMAIL, newAccount.getEmail())
+                .returning(ACCOUNT.ID, ACCOUNT.LOGIN, ACCOUNT.FIRST_NAME, ACCOUNT.LAST_NAME, ACCOUNT.EMAIL)
                 .fetchOne()
                 .map(this::fillAccount);
     }

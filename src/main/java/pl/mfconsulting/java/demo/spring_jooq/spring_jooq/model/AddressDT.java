@@ -5,6 +5,7 @@ public record AddressDT(
         String street,
         String zipCode,
         String city,
-        String addressType
+        String addressType,
+        Integer accountId
 ) {
 }

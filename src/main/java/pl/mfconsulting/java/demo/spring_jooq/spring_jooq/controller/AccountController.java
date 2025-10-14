@@ -33,7 +33,7 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<AccountDT> createAccount(@RequestBody AccountDT newAccount) {
         AccountDT created = accountRepository.create(newAccount);
-        return ResponseEntity.created(URI.create("/api/accounts/" + created.id()))
+        return ResponseEntity.created(URI.create("/api/accounts/" + created.getId()))
                 .body(created);
     }
 }

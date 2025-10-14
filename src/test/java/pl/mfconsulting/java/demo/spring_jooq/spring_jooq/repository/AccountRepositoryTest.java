@@ -42,8 +42,8 @@ class AccountRepositoryIntegrationTest {
         createUser("login1", "name1", "surname1", "mail1");
         createUser("login2", "name2", "surname2", "mail2");
 
-        createAddress("street1", "zip1", "city1", "typ1");
-        createAddress("street2", "zip2", "city2", "typ2");
+        createAddress("street1", "zip1", "city1", "type1");
+        createAddress("street2", "zip2", "city2", "type2");
 
     }
 
@@ -80,11 +80,11 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(1, account.id());
-        assertEquals("name1", account.firstName());
-        assertEquals("login1", account.login());
+        assertEquals(1, account.getId());
+        assertEquals("name1", account.getFirstName());
+        assertEquals("login1", account.getLogin());
 
-        assertTrue(account.addresses().isEmpty());
+        assertTrue(account.getAddresses().isEmpty());
     }
 
     @Test
@@ -95,8 +95,8 @@ class AccountRepositoryIntegrationTest {
 
         // Then
         assertEquals(2, accounts.size(), "Powinny zostać znalezione dwa konta.");
-        assertTrue(accounts.stream().anyMatch(a -> a.login().equals("user.jooq")));
-        assertTrue(accounts.stream().anyMatch(a -> a.login().equals("user.empty")));
+        assertTrue(accounts.stream().anyMatch(a -> a.getLogin().equals("login1")));
+        assertTrue(accounts.stream().anyMatch(a -> a.getLogin().equals("login2")));
     }
 
     @Test
@@ -109,12 +109,12 @@ class AccountRepositoryIntegrationTest {
         AccountDT created = accountRepository.create(newAccount);
 
         // Then
-        assertNotNull(created.id(), "Nowe konto powinno mieć wygenerowane ID.");
-        assertEquals("new.user", created.login());
+        assertNotNull(created.getId(), "Nowe konto powinno mieć wygenerowane ID.");
+        assertEquals("new.user", created.getLogin());
 
-        Optional<AccountDT> savedInDb = accountRepository.findByLogin(created.login());
+        Optional<AccountDT> savedInDb = accountRepository.findByLogin(created.getLogin());
         assertTrue(savedInDb.isPresent());
-        assertEquals(3, savedInDb.get().id());
+        assertEquals(3, savedInDb.get().getId());
     }
 
     @Test
@@ -128,11 +128,11 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto z adresami powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(1, account.id());
-        assertEquals(2, account.addresses().size(), "Powinny zostać znalezione dokładnie dwa adresy.");
+        assertEquals(1, account.getId());
+        assertEquals(2, account.getAddresses().size(), "Powinny zostać znalezione dokładnie dwa adresy.");
 
-        assertTrue(account.addresses().stream().anyMatch(a -> a.street().equals("Długa 5") && a.addressType().equals("HOME")));
-        assertTrue(account.addresses().stream().anyMatch(a -> a.street().equals("Krótka 10") && a.addressType().equals("OFFICE")));
+        assertTrue(account.getAddresses().stream().anyMatch(a -> a.street().equals("street1") && a.addressType().equals("type1")));
+        assertTrue(account.getAddresses().stream().anyMatch(a -> a.street().equals("street2") && a.addressType().equals("type2")));
     }
 
     @Test
@@ -146,7 +146,7 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(2, account.id());
-        assertTrue(account.addresses().isEmpty(), "Lista adresów powinna być pusta.");
+        assertEquals(2, account.getId());
+        assertTrue(account.getAddresses().isEmpty(), "Lista adresów powinna być pusta.");
     }
 }

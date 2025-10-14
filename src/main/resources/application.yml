@@ -18,6 +18,12 @@ spring:
 #    password: simba_user
   jooq:
     sql-dialect: postgres
+  logging:
+    level:
+      org:
+        jooq: DEBUG
+        springframework:
+          jdbc: DEBUG
   h2:
     console:
       enabled: true
