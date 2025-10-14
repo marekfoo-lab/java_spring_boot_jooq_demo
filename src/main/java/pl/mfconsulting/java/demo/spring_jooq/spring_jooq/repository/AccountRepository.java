@@ -2,11 +2,10 @@ package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.repository;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
-import org.jooq.Record1;
 import org.jooq.Record5;
-import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.tables.records.AccountRecord;
 import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
 import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AddressDT;
 
@@ -39,18 +38,29 @@ public class AccountRepository {
     }
 
     @Transactional
-    public AccountDT create(AccountDT newAccount) {
-        Record1<Long> sequenceResult = context.select(context.nextval(context.nextval("account_id_seq")))
-                .fetchOne();
-        return context.insertInto(ACCOUNT)
-                .set(ACCOUNT.ID, seq)
+    public Optional<Integer> create(AccountDT newAccount) {
+        // Use database-agnostic approach that works with both H2 and PostgreSQL
+        // First insert the record
+        int affectedRows = context.insertInto(ACCOUNT)
                 .set(ACCOUNT.LOGIN, newAccount.getLogin())
                 .set(ACCOUNT.FIRST_NAME, newAccount.getFirstName())
                 .set(ACCOUNT.LAST_NAME, newAccount.getLastName())
                 .set(ACCOUNT.EMAIL, newAccount.getEmail())
-                .returning(ACCOUNT.ID, ACCOUNT.LOGIN, ACCOUNT.FIRST_NAME, ACCOUNT.LAST_NAME, ACCOUNT.EMAIL)
-                .fetchOne()
-                .map(this::fillAccount);
+                .set(ACCOUNT.PASSWORD, "default_password") // Set a default password since it's required
+                .execute();
+        
+        if (affectedRows > 0) {
+            // Then query for the generated ID using the unique login
+            Integer generatedId = context.select(ACCOUNT.ID)
+                    .from(ACCOUNT)
+                    .where(ACCOUNT.LOGIN.eq(newAccount.getLogin()))
+                    .fetchOne()
+                    .getValue(ACCOUNT.ID);
+            
+            return Optional.of(generatedId);
+        }
+        
+        return Optional.empty();
     }
 
     public Optional<AccountDT> findByLoginWithAddress(String login) {

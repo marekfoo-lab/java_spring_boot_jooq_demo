@@ -106,15 +106,18 @@ class AccountRepositoryIntegrationTest {
         AccountDT newAccount = new AccountDT(3, "new.user", "Nowy", "Użytkownik", "new@test.pl", List.of());
 
         // When
-        AccountDT created = accountRepository.create(newAccount);
+        Optional<Integer> createdId = accountRepository.create(newAccount);
 
         // Then
-        assertNotNull(created.getId(), "Nowe konto powinno mieć wygenerowane ID.");
-        assertEquals("new.user", created.getLogin());
+        assertTrue(createdId.isPresent(), "Nowe konto powinno mieć wygenerowane ID.");
+        assertTrue(createdId.get() > 0, "ID powinno być większe od 0");
 
-        Optional<AccountDT> savedInDb = accountRepository.findByLogin(created.getLogin());
-        assertTrue(savedInDb.isPresent());
-        assertEquals(3, savedInDb.get().getId());
+        Optional<AccountDT> savedInDb = accountRepository.findByLogin("new.user");
+        assertTrue(savedInDb.isPresent(), "Konto powinno zostać zapisane w bazie danych");
+        assertEquals("new.user", savedInDb.get().getLogin());
+        assertEquals("Nowy", savedInDb.get().getFirstName());
+        assertEquals("Użytkownik", savedInDb.get().getLastName());
+        assertEquals("new@test.pl", savedInDb.get().getEmail());
     }
 
     @Test
