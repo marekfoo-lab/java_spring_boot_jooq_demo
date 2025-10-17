@@ -5,7 +5,6 @@ import org.jooq.Record;
 import org.jooq.Record5;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.tables.records.AccountRecord;
 import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
 import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AddressDT;
 
@@ -21,6 +20,14 @@ public class AccountRepository {
 
     public AccountRepository(DSLContext context) {
         this.context = context;
+    }
+
+    public Optional<AccountDT> findById(Integer id) {
+        return context.select(ACCOUNT.ID, ACCOUNT.LOGIN, ACCOUNT.FIRST_NAME, ACCOUNT.LAST_NAME, ACCOUNT.EMAIL)
+                .from(ACCOUNT)
+                .where(ACCOUNT.ID.eq(id))
+                .fetchOptional()
+                .map(this::fillAccount);
     }
 
     public Optional<AccountDT> findByLogin(String login) {
@@ -48,18 +55,12 @@ public class AccountRepository {
                 .set(ACCOUNT.EMAIL, newAccount.getEmail())
                 .set(ACCOUNT.PASSWORD, "default_password") // Set a default password since it's required
                 .execute();
-        
+
         if (affectedRows > 0) {
-            // Then query for the generated ID using the unique login
-            Integer generatedId = context.select(ACCOUNT.ID)
-                    .from(ACCOUNT)
-                    .where(ACCOUNT.LOGIN.eq(newAccount.getLogin()))
-                    .fetchOne()
-                    .getValue(ACCOUNT.ID);
-            
-            return Optional.of(generatedId);
+            var user = findByLogin(newAccount.getLogin());
+            return user.map(AccountDT::getId);
         }
-        
+
         return Optional.empty();
     }
 

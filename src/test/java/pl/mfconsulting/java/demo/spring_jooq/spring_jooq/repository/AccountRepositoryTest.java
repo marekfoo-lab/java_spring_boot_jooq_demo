@@ -14,7 +14,8 @@ import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.Tables.ACCOUNT;
 import static pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.Tables.ADDRESS;
 
@@ -44,34 +45,29 @@ class AccountRepositoryIntegrationTest {
 
         createAddress("street1", "zip1", "city1", "type1");
         createAddress("street2", "zip2", "city2", "type2");
-
-    }
-
-    private void createAddress(String street, String zip, String city, String type) {
-        dsl.insertInto(ADDRESS)
-                .set(ADDRESS.ACCOUNT_ID, 1)
-                .set(ADDRESS.STREET, street)
-                .set(ADDRESS.ZIP_CODE, zip)
-                .set(ADDRESS.CITY, city)
-                .set(ADDRESS.ADDRESS_TYPE, type)
-                .execute();
-    }
-
-    private void createUser(String login, String firstName, String lastName, String email) {
-        var user = dsl.insertInto(ACCOUNT)
-                .set(ACCOUNT.LOGIN, login)
-                .set(ACCOUNT.FIRST_NAME, firstName)
-                .set(ACCOUNT.LAST_NAME, lastName)
-                .set(ACCOUNT.PASSWORD, DEFAULT_PASS)
-                .set(ACCOUNT.EMAIL, email)
-                .execute();
-
-        int a = 0;
     }
 
     @Test
     @Transactional
-    void findById_ShouldReturnAccountDetails() {
+    void whenFindByIdThenReturnUser() {
+        // Given
+
+        // When
+        Optional<AccountDT> result = accountRepository.findById(Integer.valueOf(1));
+
+        // Then
+        assertTrue(result.isPresent(), "Konto powinno zostać znalezione.");
+        AccountDT account = result.get();
+        assertEquals(1, account.getId());
+        assertEquals("name1", account.getFirstName());
+        assertEquals("login1", account.getLogin());
+
+        assertTrue(account.getAddresses().isEmpty());
+    }
+
+    @Test
+    @Transactional
+    void whenFindByLoginThenReturnUser() {
         // Given
 
         // When
@@ -89,7 +85,7 @@ class AccountRepositoryIntegrationTest {
 
     @Test
     @Transactional
-    void findAll_ShouldReturnTwoAccounts() {
+    void whenFindAllThenReturnTwoRecords() {
         // When
         List<AccountDT> accounts = accountRepository.findAll();
 
@@ -101,7 +97,7 @@ class AccountRepositoryIntegrationTest {
 
     @Test
     @Transactional
-    void createAccount_ShouldInsertNewAccountAndReturnGeneratedId() {
+    void whenCreateAccountThenInsertNewAccountAndReturnGeneratedId() {
         // Given
         AccountDT newAccount = new AccountDT(3, "new.user", "Nowy", "Użytkownik", "new@test.pl", List.of());
 
@@ -112,7 +108,10 @@ class AccountRepositoryIntegrationTest {
         assertTrue(createdId.isPresent(), "Nowe konto powinno mieć wygenerowane ID.");
         assertTrue(createdId.get() > 0, "ID powinno być większe od 0");
 
+        // When
         Optional<AccountDT> savedInDb = accountRepository.findByLogin("new.user");
+
+        //Then
         assertTrue(savedInDb.isPresent(), "Konto powinno zostać zapisane w bazie danych");
         assertEquals("new.user", savedInDb.get().getLogin());
         assertEquals("Nowy", savedInDb.get().getFirstName());
@@ -122,7 +121,7 @@ class AccountRepositoryIntegrationTest {
 
     @Test
     @Transactional
-    void findByIdWithAddresses_ShouldReturnAccountWithTwoAddresses() {
+    void whenFindByLoginWithAddressesThenReturnAccountWithTwoAddresses() {
         // Given
 
         // When
@@ -140,7 +139,7 @@ class AccountRepositoryIntegrationTest {
 
     @Test
     @Transactional
-    void findByIdWithAddresses_ShouldReturnAccountWithEmptyAddressList() {
+    void whenFindByLoginWithAddressesThenReturnAccountWithEmptyAddressList() {
         // Given
 
         // When
@@ -151,5 +150,25 @@ class AccountRepositoryIntegrationTest {
         AccountDT account = result.get();
         assertEquals(2, account.getId());
         assertTrue(account.getAddresses().isEmpty(), "Lista adresów powinna być pusta.");
+    }
+
+    private void createAddress(String street, String zip, String city, String type) {
+        dsl.insertInto(ADDRESS)
+                .set(ADDRESS.ACCOUNT_ID, 1)
+                .set(ADDRESS.STREET, street)
+                .set(ADDRESS.ZIP_CODE, zip)
+                .set(ADDRESS.CITY, city)
+                .set(ADDRESS.ADDRESS_TYPE, type)
+                .execute();
+    }
+
+    private void createUser(String login, String firstName, String lastName, String email) {
+        dsl.insertInto(ACCOUNT)
+                .set(ACCOUNT.LOGIN, login)
+                .set(ACCOUNT.FIRST_NAME, firstName)
+                .set(ACCOUNT.LAST_NAME, lastName)
+                .set(ACCOUNT.PASSWORD, DEFAULT_PASS)
+                .set(ACCOUNT.EMAIL, email)
+                .execute();
     }
 }
