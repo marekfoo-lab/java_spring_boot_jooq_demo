@@ -1,12 +1,12 @@
 package pl.mfconsulting.java.demo.quarkus_jooq;
 
+import io.micronaut.runtime.Micronaut;
 
-@SpringBootApplication
 public class QuarkusJooqApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(QuarkusJooqApplication.class, args);
-	}
+    public static void main(String[] args) {
+        Micronaut.run(QuarkusJooqApplication.class, args);
+    }
 }
 
 
