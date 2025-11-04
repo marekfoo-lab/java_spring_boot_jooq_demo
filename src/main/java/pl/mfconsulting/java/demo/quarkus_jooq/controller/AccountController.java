@@ -1,9 +1,9 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.controller;
+package pl.mfconsulting.java.demo.quarkus_jooq.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.repository.AccountRepository;
+import pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.repository.AccountRepository;
 
 import java.net.URI;
 import java.util.List;

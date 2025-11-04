@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model;
+package pl.mfconsulting.java.demo.quarkus_jooq.model;
 
 import lombok.Getter;
 

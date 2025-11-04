@@ -1,9 +1,9 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq;
+package pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq;
 
 import org.junit.jupiter.api.Test;
 
 //@SpringBootTest
-class SpringJooqApplicationTests {
+class QuarkusJooqApplicationTests {
 
 	@Test
 	void contextLoads() {

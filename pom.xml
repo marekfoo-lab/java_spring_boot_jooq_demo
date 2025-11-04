@@ -11,95 +11,121 @@
         <relativePath/>
     </parent>
 
-    <groupId>pl.mfconsulting.java.demo.spring-jooq</groupId>
-    <artifactId>spring-jooq-maven-demo</artifactId>
+    <groupId>pl.mfconsulting.java.demo.quarkus-jooq</groupId>
+    <artifactId>quarkus-jooq-maven-demo</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>jooq-demo</name>
-    <description>Demo project for Spring Boot, jOOQ, and Liquibase using Maven</description>
+    <description>Demo project for Quarkus, jOOQ, and Liquibase using Maven</description>
 
     <properties>
-        <java.version>21</java.version>
-        <jooq.version>3.20.8</jooq.version>
-        <h2.version>2.4.240</h2.version>
-        <lombok.version>1.18.42</lombok.version>
-        <maven.clean.version>3.5.0</maven.clean.version>
-        <liquibase.version>5.0.0</liquibase.version>
-        <liquibase.maven.version>5.0.0</liquibase.maven.version>
-        <spring.maven.plugin.version>3.5.6</spring.maven.plugin.version>
+        <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+        <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
+        <quarkus.platform.version>3.29.0</quarkus.platform.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <h2.version>2.4.240</h2.version>
+        <liquibase.maven.version>5.0.0</liquibase.maven.version>
+        <lombok.version>1.18.42</lombok.version>
+        <jooq.version>3.20.8</jooq.version>
+
+        <maven.clean.version>3.5.0</maven.clean.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${quarkus.platform.group-id}</groupId>
+                <artifactId>${quarkus.platform.artifact-id}</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
-        <!-- Spring Boot Starters -->
+        <!-- Podstawowy serwer HTTP i JSON -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jooq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+            <version>3.15.7</version>
         </dependency>
 
-        <!-- Database Driver (H2) -->
+        <!-- jOOQ -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
+            <groupId>io.quarkiverse.jooq</groupId>
+            <artifactId>quarkus-jooq</artifactId>
+            <version>2.1.0</version>
         </dependency>
 
-        <!-- Utilities -->
+        <!-- Liquibase -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-liquibase</artifactId>
+        </dependency>
+
+        <!-- Baza danych H2 -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jdbc-h2</artifactId>
+        </dependency>
+
+        <!-- Lombok (poza Quarkusem, jak zwykle w Mavenie) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
             <version>${lombok.version}</version>
-        </dependency>
-
-        <!-- Jooq dependency -->
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq</artifactId>
-            <version>${jooq.version}</version>
-        </dependency>
-
-        <!-- Development Tools -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
 
-        <!-- Testing -->
+        <!-- Testy -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
         <finalName>jooq-demo-app</finalName>
-
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.maven.plugin.version}</version>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>generate-code</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Compiler Plugin with Lombok support -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.SpringJooqApplication</mainClass>
-                    <excludes>
-                        <exclude>
+                    <source>21</source>
+                    <target>21</target>
+                    <annotationProcessorPaths>
+                        <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
@@ -160,32 +186,15 @@
                 </dependencies>
             </plugin>
 
-            <!-- Maven Compiler Plugin with Lombok support -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
-                <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-
             <!-- 5. jOOQ Code Generation Maven Plugin -->
+            <!-- jOOQ Codegen (jeśli chcesz generować kod z Liquibase/H2) -->
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq.version}</version>
                 <executions>
                     <execution>
-                        <id>generate-jooq-code</id>
+                        <id>generate-jooq</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
@@ -193,15 +202,21 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <jdbc>
+                        <driver>org.h2.Driver</driver>
+                        <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
+                        <user>sa</user>
+                        <password></password>
+                    </jdbc>
                     <generator>
                         <database>
+                            <name>org.jooq.meta.h2.H2Database</name>
                             <inputSchema>PUBLIC</inputSchema>
                             <includes>.*</includes>
                             <excludes>databasechangelog|databasechangeloglock</excludes>
-                            <name>org.jooq.meta.h2.H2Database</name>
                         </database>
                         <target>
-                            <packageName>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated</packageName>
+                            <packageName>pl.mfconsulting.java.demo.quarkus_jooq.generated</packageName>
                             <directory>${project.build.directory}/generated-sources/jooq</directory>
                         </target>
                         <generate>
@@ -211,12 +226,6 @@
                             <fluentSetters>true</fluentSetters>
                         </generate>
                     </generator>
-                    <jdbc>
-                        <driver>org.h2.Driver</driver>
-                        <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
-                        <user>sa</user>
-                        <password></password>
-                    </jdbc>
                 </configuration>
                 <dependencies>
                     <dependency>
