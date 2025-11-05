@@ -1,38 +1,47 @@
 package pl.mfconsulting.java.demo.quarkus_jooq.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.model.AccountDT;
-import pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.repository.AccountRepository;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.quarkus_jooq.repository.AccountRepository;
 
-import java.net.URI;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/accounts")
+
+@Path("/api/accounts")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class AccountController {
 
     private final AccountRepository accountRepository;
 
+    @Inject
     public AccountController(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
-    @GetMapping
+    @GET
     public List<AccountDT> getAllAccounts() {
         return accountRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AccountDT> getAccountByLogin(@PathVariable String login) {
+    @GET
+    @Path("/{id}")
+    public Response getAccountByLogin(@PathParam("id") String login) {
         return accountRepository.findByLogin(login)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(Response::ok)
+                .orElse(Response.status(Response.Status.NOT_FOUND)).build();
     }
 
-    @PostMapping
-    public ResponseEntity<AccountDT> createAccount(@RequestBody AccountDT newAccount) {
+    @POST
+    public Response createAccount(AccountDT newAccount) {
         var createdId = accountRepository.create(newAccount);
-        return ResponseEntity.created(URI.create("/api/accounts/" + createdId)).build();
+        UriBuilder uriBuilder = UriBuilder.fromResource(AccountController.class)
+                .path(String.valueOf(createdId));
+//        return Response.created(URI.create("/api/accounts/" + createdId)).build();
+        return Response.created(uriBuilder.build()).entity(createdId).build();
     }
 }

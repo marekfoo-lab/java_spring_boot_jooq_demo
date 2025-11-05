@@ -1,14 +1,12 @@
-spring:
+quarkus:
   application:
     name: java-spring-jooq
-  liquibase: #Needed for spring-boot start
-    enabled: false # true when need liquibase start with app
-    change-log: classpath:db/master.yaml
-    url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
-    user: sa
-    password:
+  jooq:
+    dialect: POSTGRES
   datasource:
-    url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
+    jdbc:
+      url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
+    db-kind: h2
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -16,8 +14,12 @@ spring:
 #    driver-class-name: org.postgresql.Driver
 #    username: simba_user
 #    password: simba_user
-  jooq:
-    sql-dialect: postgres
+  liquibase: #Needed for spring-boot start
+    enabled: false # true when need liquibase start with app
+    change-log: classpath:db/master.yaml
+    url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
+    user: sa
+    password:
   logging:
     level:
       org:
@@ -28,3 +30,13 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+"%test":
+  quarkus:
+    datasource:
+      db-kind: h2
+      jdbc:
+        url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    jooq:
+      dialect: POSTGRES
+      schema-name: INTEGRATION_SCHEMA

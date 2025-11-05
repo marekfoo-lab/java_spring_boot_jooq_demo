@@ -1,34 +1,32 @@
 package pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.repository;
 
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
-import pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.SpringJooqApplication;
-import pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.quarkus_jooq.repository.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ACCOUNT;
+import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ADDRESS;
 
-@SpringBootTest(classes = SpringJooqApplication.class)
-@ActiveProfiles("test")
+@QuarkusTest
 @Slf4j
 class AccountRepositoryIntegrationTest {
     private static final String DEFAULT_PASS = "test_pass";
 
-    @Autowired
+    @Inject
     private AccountRepository accountRepository;
 
-    @Autowired
+    @Inject
     private DSLContext dsl;
 
     @BeforeEach
@@ -58,11 +56,11 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(1, account.getId());
-        assertEquals("name1", account.getFirstName());
-        assertEquals("login1", account.getLogin());
+        assertEquals(1, account.id());
+        assertEquals("name1", account.firstName());
+        assertEquals("login1", account.login());
 
-        assertTrue(account.getAddresses().isEmpty());
+        assertTrue(account.addresses().isEmpty());
     }
 
     @Test
@@ -76,11 +74,11 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(1, account.getId());
-        assertEquals("name1", account.getFirstName());
-        assertEquals("login1", account.getLogin());
+        assertEquals(1, account.id());
+        assertEquals("name1", account.firstName());
+        assertEquals("login1", account.login());
 
-        assertTrue(account.getAddresses().isEmpty());
+        assertTrue(account.addresses().isEmpty());
     }
 
     @Test
@@ -91,8 +89,8 @@ class AccountRepositoryIntegrationTest {
 
         // Then
         assertEquals(2, accounts.size(), "Powinny zostać znalezione dwa konta.");
-        assertTrue(accounts.stream().anyMatch(a -> a.getLogin().equals("login1")));
-        assertTrue(accounts.stream().anyMatch(a -> a.getLogin().equals("login2")));
+        assertTrue(accounts.stream().anyMatch(a -> a.login().equals("login1")));
+        assertTrue(accounts.stream().anyMatch(a -> a.login().equals("login2")));
     }
 
     @Test
@@ -113,10 +111,10 @@ class AccountRepositoryIntegrationTest {
 
         //Then
         assertTrue(savedInDb.isPresent(), "Konto powinno zostać zapisane w bazie danych");
-        assertEquals("new.user", savedInDb.get().getLogin());
-        assertEquals("Nowy", savedInDb.get().getFirstName());
-        assertEquals("Użytkownik", savedInDb.get().getLastName());
-        assertEquals("new@test.pl", savedInDb.get().getEmail());
+        assertEquals("new.user", savedInDb.get().login());
+        assertEquals("Nowy", savedInDb.get().firstName());
+        assertEquals("Użytkownik", savedInDb.get().lastName());
+        assertEquals("new@test.pl", savedInDb.get().email());
     }
 
     @Test
@@ -130,11 +128,11 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto z adresami powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(1, account.getId());
-        assertEquals(2, account.getAddresses().size(), "Powinny zostać znalezione dokładnie dwa adresy.");
+        assertEquals(1, account.id());
+        assertEquals(2, account.addresses().size(), "Powinny zostać znalezione dokładnie dwa adresy.");
 
-        assertTrue(account.getAddresses().stream().anyMatch(a -> a.street().equals("street1") && a.addressType().equals("type1")));
-        assertTrue(account.getAddresses().stream().anyMatch(a -> a.street().equals("street2") && a.addressType().equals("type2")));
+        assertTrue(account.addresses().stream().anyMatch(a -> a.street().equals("street1") && a.addressType().equals("type1")));
+        assertTrue(account.addresses().stream().anyMatch(a -> a.street().equals("street2") && a.addressType().equals("type2")));
     }
 
     @Test
@@ -148,8 +146,8 @@ class AccountRepositoryIntegrationTest {
         // Then
         assertTrue(result.isPresent(), "Konto powinno zostać znalezione.");
         AccountDT account = result.get();
-        assertEquals(2, account.getId());
-        assertTrue(account.getAddresses().isEmpty(), "Lista adresów powinna być pusta.");
+        assertEquals(2, account.id());
+        assertTrue(account.addresses().isEmpty(), "Lista adresów powinna być pusta.");
     }
 
     private void createAddress(String street, String zip, String city, String type) {

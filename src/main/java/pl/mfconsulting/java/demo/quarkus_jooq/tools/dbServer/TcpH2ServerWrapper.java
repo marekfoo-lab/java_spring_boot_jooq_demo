@@ -2,19 +2,19 @@ package pl.mfconsulting.java.demo.quarkus_jooq.tools.dbServer;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
 
 @Slf4j
-@Component
+@ApplicationScoped
 public class TcpH2ServerWrapper {
 
     private final TcpH2Server tcpServer;
 
-    @Autowired
+    @Inject
     public TcpH2ServerWrapper() {
         this.tcpServer = new TcpH2Server();
     }

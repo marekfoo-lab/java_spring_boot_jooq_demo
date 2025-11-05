@@ -1,23 +1,25 @@
 package pl.mfconsulting.java.demo.quarkus_jooq.repository;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record5;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
 import pl.mfconsulting.java.demo.quarkus_jooq.model.AddressDT;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ACCOUNT;
+import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ADDRESS;
 
-@Repository
+@ApplicationScoped
 public class AccountRepository {
     private final DSLContext context;
 
+    @Inject
     public AccountRepository(DSLContext context) {
         this.context = context;
     }
@@ -49,16 +51,16 @@ public class AccountRepository {
         // Use database-agnostic approach that works with both H2 and PostgreSQL
         // First insert the record
         int affectedRows = context.insertInto(ACCOUNT)
-                .set(ACCOUNT.LOGIN, newAccount.getLogin())
-                .set(ACCOUNT.FIRST_NAME, newAccount.getFirstName())
-                .set(ACCOUNT.LAST_NAME, newAccount.getLastName())
-                .set(ACCOUNT.EMAIL, newAccount.getEmail())
+                .set(ACCOUNT.LOGIN, newAccount.login())
+                .set(ACCOUNT.FIRST_NAME, newAccount.firstName())
+                .set(ACCOUNT.LAST_NAME, newAccount.lastName())
+                .set(ACCOUNT.EMAIL, newAccount.email())
                 .set(ACCOUNT.PASSWORD, "default_password") // Set a default password since it's required
                 .execute();
 
         if (affectedRows > 0) {
-            var user = findByLogin(newAccount.getLogin());
-            return user.map(AccountDT::getId);
+            var user = findByLogin(newAccount.login());
+            return user.map(AccountDT::id);
         }
 
         return Optional.empty();
@@ -75,7 +77,7 @@ public class AccountRepository {
                 .findFirst()
                 .map(records -> {
                     //get Account
-                    var accountRecord = records.getFirst().into(ACCOUNT);
+                    var accountRecord = records.get(0).into(ACCOUNT);
 
                     List<AddressDT> addresses = records.stream()
                             //Filter only existing addresses for given account

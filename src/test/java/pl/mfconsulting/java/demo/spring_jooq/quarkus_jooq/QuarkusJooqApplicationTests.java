@@ -1,13 +1,24 @@
 package pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq;
 
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.TestProfile;
 import org.junit.jupiter.api.Test;
+import pl.mfconsulting.java.demo.quarkus_jooq.config.IntegrationTestProfile;
 
-//@SpringBootTest
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
+
+@QuarkusTest
+@TestProfile(IntegrationTestProfile.class)
 class QuarkusJooqApplicationTests {
 
 	@Test
-	void contextLoads() {
-        assert(true);
+	void whenCallGetAllThenReturn() {
+        given()
+                .when().get("/api/accounts")
+                .then()
+                    .statusCode(200)
+                    .body("size()", is(1));
 	}
 
 }
