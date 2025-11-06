@@ -1,36 +1,21 @@
 quarkus:
   application:
     name: java-spring-jooq
+  liquibase:
+    change-log: classpath:classpath:db/master.yaml
+    migrate-at-start: false
+    contexts: dev,test
+    default-schema: public
   jooq:
+#    sql-dialect: H2
     dialect: POSTGRES
-  datasource:
-    jdbc:
-      url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
-    db-kind: h2
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-#    url: jdbc:postgresql://localhost:5432/simba_db
-#    driver-class-name: org.postgresql.Driver
-#    username: simba_user
-#    password: simba_user
-  liquibase: #Needed for spring-boot start
-    enabled: false # true when need liquibase start with app
-    change-log: classpath:db/master.yaml
-    url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
-    user: sa
-    password:
-  logging:
-    level:
-      org:
-        jooq: DEBUG
-        springframework:
-          jdbc: DEBUG
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
+    render-formatted: true
+"%dev":
+  quarkus:
+    datasource:
+      jdbc:
+        url: jdbc:h2:file:./data/devdb;MODE=PostgreSQL
+        max-pool-size: 10
 "%test":
   quarkus:
     datasource:

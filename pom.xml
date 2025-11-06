@@ -28,6 +28,7 @@
         <liquibase.maven.version>5.0.1</liquibase.maven.version>
         <lombok.version>1.18.42</lombok.version>
         <jooq.version>3.20.8</jooq.version>
+        <quarkus.jooq.version>2.1.0</quarkus.jooq.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.4</surefire-plugin.version>
         <maven.clean.version>3.5.0</maven.clean.version>
@@ -60,7 +61,7 @@
         <dependency>
             <groupId>io.quarkiverse.jooq</groupId>
             <artifactId>quarkus-jooq</artifactId>
-            <version>2.1.0</version>
+            <version>${quarkus.jooq.version}</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -198,8 +199,6 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-
-            <!-- 4. Liquibase Maven Plugin (Migracja schemy) -->
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>

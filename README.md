@@ -30,10 +30,10 @@ mvn clean jooq-codegen:generate compile
 ### Run App
 java -jar target/jooq-demo-app.jar
 
-To generate code:
-./gradlew --stop
-./gradlew clean generateJooq
-./gradlew generateJooq
-
+### Run App in production mode
+mvn clean package
+Main class: io.quarkus.bootstrap.runner.QuarkusRunner
+VM options: -Dquarkus.profile=prod
+Program arguments: -Dquarkus.http.port=8080
 
 ## PROBLEMS
