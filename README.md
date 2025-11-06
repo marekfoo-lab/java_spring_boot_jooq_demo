@@ -38,4 +38,5 @@ Main class: io.quarkus.bootstrap.runner.QuarkusRunner
 VM options: -Dquarkus.profile=prod
 Program arguments: -Dquarkus.http.port=8080
 
+Profiles: dev, test(unit, integration), staging, production
 ## PROBLEMS

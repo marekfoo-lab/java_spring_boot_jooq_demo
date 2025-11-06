@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultExecuteListenerProvider;
@@ -22,9 +23,14 @@ public class AppConfiguration {
     @ApplicationScoped
     @CustomDLS
     public DSLContext dslContext() {
+        Settings settings = new Settings()
+                .withMapRecordComponentParameterNames(true)
+                .withMapConstructorPropertiesParameterNames(true);
+
         Configuration configuration = new DefaultConfiguration()
                 .set(dataSource)
                 .set(SQLDialect.POSTGRES)
+                .set(settings)
                 .set(new DefaultExecuteListenerProvider(new CustomJooqLogger()));
 
         return DSL.using(configuration);
