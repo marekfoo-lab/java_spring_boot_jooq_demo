@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq.repository;
+package pl.mfconsulting.java.demo.quarkus_jooq.repository;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -8,7 +8,6 @@ import org.jooq.DSLContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
-import pl.mfconsulting.java.demo.quarkus_jooq.repository.AccountRepository;
 
 import java.util.List;
 import java.util.Optional;

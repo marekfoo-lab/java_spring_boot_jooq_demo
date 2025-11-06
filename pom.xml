@@ -48,7 +48,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Podstawowy serwer HTTP i JSON -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
@@ -64,7 +63,10 @@
             <artifactId>quarkus-jooq</artifactId>
             <version>2.1.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-config-yaml</artifactId>
+        </dependency>
         <!-- Liquibase -->
         <dependency>
             <groupId>io.quarkus</groupId>

@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.quarkus_jooq;
+package pl.mfconsulting.java.demo.quarkus_jooq;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;

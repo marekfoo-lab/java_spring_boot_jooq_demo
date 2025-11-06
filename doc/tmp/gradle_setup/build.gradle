@@ -79,7 +79,6 @@ liquibase {
     }
 }
 
-// Przywrócono: Prawidłowa struktura dla wtyczki nu.studer.jooq
 jooq {
     configurations {
         main {
@@ -102,7 +101,7 @@ jooq {
                         includes = '.*'
                     }
                     target {
-                        packageName = 'pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated'
+                        packageName = 'pl.mfconsulting.java.demo.quarkus_jooq.generated'
                         directory = 'target/generated-sources/jooq'
                     }
                 }
