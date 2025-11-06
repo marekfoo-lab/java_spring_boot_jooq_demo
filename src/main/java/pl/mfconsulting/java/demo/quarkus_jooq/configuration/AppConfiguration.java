@@ -20,6 +20,7 @@ public class AppConfiguration {
 
     @Produces
     @ApplicationScoped
+    @CustomDLS
     public DSLContext dslContext() {
         Configuration configuration = new DefaultConfiguration()
                 .set(dataSource)

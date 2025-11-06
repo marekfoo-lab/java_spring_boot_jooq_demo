@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record5;
+import pl.mfconsulting.java.demo.quarkus_jooq.configuration.CustomDLS;
 import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
 import pl.mfconsulting.java.demo.quarkus_jooq.model.AddressDT;
 
@@ -17,12 +18,10 @@ import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ADDRESS;
 
 @ApplicationScoped
 public class AccountRepository {
-    private final DSLContext context;
 
+    @CustomDLS
     @Inject
-    public AccountRepository(DSLContext context) {
-        this.context = context;
-    }
+    private DSLContext context;
 
     public Optional<AccountDT> findById(Integer id) {
         return context.select(ACCOUNT.ID, ACCOUNT.LOGIN, ACCOUNT.FIRST_NAME, ACCOUNT.LAST_NAME, ACCOUNT.EMAIL)

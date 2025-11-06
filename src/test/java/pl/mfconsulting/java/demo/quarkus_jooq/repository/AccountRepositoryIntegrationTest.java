@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.mfconsulting.java.demo.quarkus_jooq.configuration.CustomDLS;
 import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
 
 import java.util.List;
@@ -26,6 +27,7 @@ class AccountRepositoryIntegrationTest {
     private AccountRepository accountRepository;
 
     @Inject
+    @CustomDLS
     private DSLContext dsl;
 
     @BeforeEach
