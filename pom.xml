@@ -24,9 +24,10 @@
         <h2.version>2.4.240</h2.version>
         <lombok.version>1.18.42</lombok.version>
         <maven.clean.version>3.5.0</maven.clean.version>
-        <liquibase.version>5.0.0</liquibase.version>
+        <liquibase.version>5.0.1</liquibase.version>
         <liquibase.maven.version>5.0.0</liquibase.maven.version>
-        <spring.maven.plugin.version>3.5.6</spring.maven.plugin.version>
+        <datasource.version>1.11.0</datasource.version>
+        <spring.maven.plugin.version>3.5.7</spring.maven.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     </properties>
 
@@ -82,6 +83,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>net.ttddyy</groupId>
+            <artifactId>datasource-proxy</artifactId>
+            <version>${datasource.version}</version>
+        </dependency
     </dependencies>
 
     <build>
