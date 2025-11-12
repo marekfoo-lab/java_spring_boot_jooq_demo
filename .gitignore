@@ -7,3 +7,6 @@
 .vscode/
 /data/devdb.trace.db
 /doc/tmp/gradle_setup/.gradle/
+/.mvn/wrapper/maven-wrapper.properties
+/mvnw
+/mvnw.cmd

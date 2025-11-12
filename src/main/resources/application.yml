@@ -2,8 +2,8 @@ quarkus:
   application:
     name: java-spring-jooq
   liquibase:
-    change-log: classpath:classpath:db/master.yaml
-    migrate-at-start: false
+    change-log: classpath:db/master.yaml
+    migrate-at-start: true
     contexts: dev,test
     default-schema: public
   jooq:
