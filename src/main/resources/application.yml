@@ -38,10 +38,13 @@ quarkus:
 "%staging":
   quarkus:
     datasource:
+      username: sa
+      password: ""
       jdbc:
         url: jdbc:h2:file:./data/devdb;MODE=PostgreSQL
         max-pool-size: 10
-
+    jooq:
+      dialect: POSTGRES
 "%prod":
   quarkus:
     datasource:
