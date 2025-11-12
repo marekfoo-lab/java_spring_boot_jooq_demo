@@ -5,27 +5,31 @@ quarkus:
     change-log: classpath:db/master.yaml
     migrate-at-start: true
     contexts: dev,test
-    default-schema: public
   jooq:
 #    sql-dialect: H2
     dialect: POSTGRES
-    render-formatted: true
 "%dev":
   quarkus:
     datasource:
+      username: sa
+      password: ""
       jdbc:
         url: jdbc:h2:file:./data/devdb;MODE=PostgreSQL
         max-pool-size: 10
+    jooq:
+      dialect: POSTGRES
 "%test":
   quarkus:
-    liquibase:
-      migrate-at-start: true
     datasource:
       db-kind: h2
+      username: sa
+      password: ""
       jdbc:
         url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
     jooq:
       dialect: POSTGRES
+    liquibase:
+      migrate-at-start: true
 "%integration":
   quarkus:
     liquibase:
