@@ -11,6 +11,8 @@ User: sa
 Password:
 
 ### Build package
+To install wrapper: mvn wrapper:wrapper
+
 To clean old db, create new db from liquibase, generate jooq classes, compile all code run:
 mvn clean install
 
