@@ -88,7 +88,7 @@
             <groupId>net.ttddyy</groupId>
             <artifactId>datasource-proxy</artifactId>
             <version>${datasource.version}</version>
-        </dependency
+        </dependency>
     </dependencies>
 
     <build>
