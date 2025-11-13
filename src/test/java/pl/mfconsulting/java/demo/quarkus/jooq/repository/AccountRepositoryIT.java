@@ -20,7 +20,7 @@ import static pl.mfconsulting.java.demo.quarkus.jooq.generated.Tables.ADDRESS;
 
 @QuarkusTest
 @Slf4j
-class AccountRepositoryIntegrationTest {
+class AccountRepositoryIT {
     private static final String DEFAULT_PASS = "test_pass";
 
     @Inject

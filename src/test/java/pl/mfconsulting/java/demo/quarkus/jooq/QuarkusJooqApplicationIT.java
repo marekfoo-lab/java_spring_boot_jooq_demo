@@ -10,14 +10,14 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @TestProfile(IntegrationTestProfile.class)
-class QuarkusJooqApplicationTests {
+class QuarkusJooqApplicationIT {
 
 	@Test
 	void whenCallGetAllThenReturn() {
         given()
                 .when().get("/api/accounts")
                 .then()
-                    .statusCode(200)
+                    .statusCode(201)
                     .body("size()", is(3));
 	}
 
