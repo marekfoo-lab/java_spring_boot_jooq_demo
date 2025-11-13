@@ -1,18 +1,18 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.repository;
+package pl.mfconsulting.java.demo.spring.jooq.repository;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record5;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AddressDT;
+import pl.mfconsulting.java.demo.spring.jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.spring.jooq.model.AddressDT;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.ACCOUNT;
+import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.ADDRESS;
 
 @Repository
 public class AccountRepository {

@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.repository;
+package pl.mfconsulting.java.demo.spring.jooq.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
@@ -8,16 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.SpringJooqApplication;
-import pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.spring.jooq.SpringJooqApplication;
+import pl.mfconsulting.java.demo.spring.jooq.model.AccountDT;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.ACCOUNT;
+import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.ADDRESS;
 
 @SpringBootTest(classes = SpringJooqApplication.class)
 @ActiveProfiles("test")

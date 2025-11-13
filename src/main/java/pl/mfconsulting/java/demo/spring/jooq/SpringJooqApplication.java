@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq;
+package pl.mfconsulting.java.demo.spring.jooq;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

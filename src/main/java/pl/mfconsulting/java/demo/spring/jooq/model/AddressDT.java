@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.model;
+package pl.mfconsulting.java.demo.spring.jooq.model;
 
 public record AddressDT(
         Integer id,

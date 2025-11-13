@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.spring_jooq.spring_jooq.tools.dbServer;
+package pl.mfconsulting.java.demo.spring.jooq.tools.dbServer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.h2.tools.Server;

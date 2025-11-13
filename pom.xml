@@ -25,7 +25,7 @@
         <lombok.version>1.18.42</lombok.version>
         <maven.clean.version>3.5.0</maven.clean.version>
         <liquibase.version>5.0.1</liquibase.version>
-        <liquibase.maven.version>5.0.0</liquibase.maven.version>
+        <liquibase.maven.version>5.0.1</liquibase.maven.version>
         <datasource.version>1.11.0</datasource.version>
         <spring.maven.plugin.version>3.5.7</spring.maven.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
@@ -100,7 +100,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.maven.plugin.version}</version>
                 <configuration>
-                    <mainClass>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.SpringJooqApplication</mainClass>
+                    <mainClass>pl.mfconsulting.java.demo.spring.jooq.SpringJooqApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -124,7 +124,6 @@
                             </includes>
                             <followSymlinks>false</followSymlinks>
                         </fileset>
-                        <!-- Usunięcie generowanego kodu jOOQ -->
                         <fileset>
                             <directory>target/generated-sources</directory>
                             <includes>
@@ -208,7 +207,7 @@
                             <name>org.jooq.meta.h2.H2Database</name>
                         </database>
                         <target>
-                            <packageName>pl.mfconsulting.java.demo.spring_jooq.spring_jooq.generated</packageName>
+                            <packageName>pl.mfconsulting.java.demo.spring.jooq.generated</packageName>
                             <directory>${project.build.directory}/generated-sources/jooq</directory>
                         </target>
                         <generate>
