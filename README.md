@@ -29,6 +29,16 @@ mvn jooq-codegen:generate
 Update jooq classes and compile all:
 mvn clean jooq-codegen:generate compile
 
+### Run Tests
+For integration tests:    
+mvn -DskipITs=false failsafe:integration-test
+
+For unit tests:
+mvn test
+
+To run all tests: 
+mvn clean install -DskipITs=false
+
 ### Run App
 java -jar target/jooq-demo-app.jar
 

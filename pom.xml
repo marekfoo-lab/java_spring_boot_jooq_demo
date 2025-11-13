@@ -165,7 +165,6 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <!-- To run all tests:  to run: mvn verify or mvn install -->
             <!-- unit tests: mvn test-->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -181,7 +180,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <!-- only integration tests: mvn integration-test-->
+            <!-- for integration tests: mvn failsafe:integration-test-->
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${surefire-plugin.version}</version>

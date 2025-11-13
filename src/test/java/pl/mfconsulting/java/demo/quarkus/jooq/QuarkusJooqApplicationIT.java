@@ -17,7 +17,7 @@ class QuarkusJooqApplicationIT {
         given()
                 .when().get("/api/accounts")
                 .then()
-                    .statusCode(201)
+                    .statusCode(200)
                     .body("size()", is(3));
 	}
 
