@@ -1,9 +1,9 @@
-package pl.mfconsulting.java.demo.quarkus_jooq;
+package pl.mfconsulting.java.demo.quarkus.jooq;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import org.junit.jupiter.api.Test;
-import pl.mfconsulting.java.demo.quarkus_jooq.config.IntegrationTestProfile;
+import pl.mfconsulting.java.demo.quarkus.jooq.config.IntegrationTestProfile;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;

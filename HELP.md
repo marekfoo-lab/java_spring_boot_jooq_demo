@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'pl.mfconsulting.java.demo.spring-jooq.spring-jooq' is invalid and this project uses 'pl.mfconsulting.java.demo.quarkus_jooq' instead.
+* The original package name 'pl.mfconsulting.java.demo.spring-jooq.spring-jooq' is invalid and this project uses 'pl.mfconsulting.java.demo.quarkus.jooq' instead.
 
 # Getting Started
 

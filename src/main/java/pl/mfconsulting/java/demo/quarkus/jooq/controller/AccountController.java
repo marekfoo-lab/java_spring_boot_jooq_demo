@@ -1,12 +1,12 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.controller;
+package pl.mfconsulting.java.demo.quarkus.jooq.controller;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
-import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
-import pl.mfconsulting.java.demo.quarkus_jooq.repository.AccountRepository;
+import pl.mfconsulting.java.demo.quarkus.jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.quarkus.jooq.repository.AccountRepository;
 
 import java.util.List;
 

@@ -228,9 +228,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
-            <!-- 5. jOOQ Code Generation Maven Plugin -->
-            <!-- jOOQ Codegen (jeśli chcesz generować kod z Liquibase/H2) -->
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
@@ -259,7 +256,7 @@
                             <excludes>databasechangelog|databasechangeloglock</excludes>
                         </database>
                         <target>
-                            <packageName>pl.mfconsulting.java.demo.quarkus_jooq.generated</packageName>
+                            <packageName>pl.mfconsulting.java.demo.quarkus.jooq.generated</packageName>
                             <directory>${project.build.directory}/generated-sources/jooq</directory>
                         </target>
                         <generate>

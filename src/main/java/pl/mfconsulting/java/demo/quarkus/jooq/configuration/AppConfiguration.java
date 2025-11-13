@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.configuration;
+package pl.mfconsulting.java.demo.quarkus.jooq.configuration;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;

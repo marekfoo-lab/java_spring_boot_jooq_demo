@@ -1,6 +1,6 @@
 quarkus:
   application:
-    name: java-spring-jooq
+    name: java-quarkus-jooq
   liquibase:
     change-log: classpath:db/master.yaml
     migrate-at-start: true

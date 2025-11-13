@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.repository;
+package pl.mfconsulting.java.demo.quarkus.jooq.repository;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -7,16 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.mfconsulting.java.demo.quarkus_jooq.configuration.CustomDLS;
-import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.quarkus.jooq.configuration.CustomDLS;
+import pl.mfconsulting.java.demo.quarkus.jooq.model.AccountDT;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.quarkus.jooq.generated.Tables.ACCOUNT;
+import static pl.mfconsulting.java.demo.quarkus.jooq.generated.Tables.ADDRESS;
 
 @QuarkusTest
 @Slf4j

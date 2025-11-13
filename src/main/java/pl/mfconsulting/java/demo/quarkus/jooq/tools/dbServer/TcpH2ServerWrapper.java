@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.tools.dbServer;
+package pl.mfconsulting.java.demo.quarkus.jooq.tools.dbServer;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;

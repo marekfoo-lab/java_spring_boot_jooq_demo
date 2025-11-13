@@ -101,7 +101,7 @@ jooq {
                         includes = '.*'
                     }
                     target {
-                        packageName = 'pl.mfconsulting.java.demo.quarkus_jooq.generated'
+                        packageName = 'pl.mfconsulting.java.demo.quarkus.jooq.generated'
                         directory = 'target/generated-sources/jooq'
                     }
                 }

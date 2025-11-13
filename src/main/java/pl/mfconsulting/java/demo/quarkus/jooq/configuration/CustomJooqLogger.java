@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.configuration;
+package pl.mfconsulting.java.demo.quarkus.jooq.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.ExecuteContext;

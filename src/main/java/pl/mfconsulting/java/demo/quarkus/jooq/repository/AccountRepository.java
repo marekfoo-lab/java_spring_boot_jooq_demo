@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.repository;
+package pl.mfconsulting.java.demo.quarkus.jooq.repository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -6,15 +6,15 @@ import jakarta.transaction.Transactional;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record5;
-import pl.mfconsulting.java.demo.quarkus_jooq.configuration.CustomDLS;
-import pl.mfconsulting.java.demo.quarkus_jooq.model.AccountDT;
-import pl.mfconsulting.java.demo.quarkus_jooq.model.AddressDT;
+import pl.mfconsulting.java.demo.quarkus.jooq.configuration.CustomDLS;
+import pl.mfconsulting.java.demo.quarkus.jooq.model.AccountDT;
+import pl.mfconsulting.java.demo.quarkus.jooq.model.AddressDT;
 
 import java.util.List;
 import java.util.Optional;
 
-import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.quarkus_jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.quarkus.jooq.generated.Tables.ACCOUNT;
+import static pl.mfconsulting.java.demo.quarkus.jooq.generated.Tables.ADDRESS;
 
 @ApplicationScoped
 public class AccountRepository {

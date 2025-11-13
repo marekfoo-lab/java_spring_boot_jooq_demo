@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.config;
+package pl.mfconsulting.java.demo.quarkus.jooq.config;
 
 import io.quarkus.test.junit.QuarkusTestProfile;
 

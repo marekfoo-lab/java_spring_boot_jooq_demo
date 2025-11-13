@@ -1,4 +1,4 @@
-package pl.mfconsulting.java.demo.quarkus_jooq.model;
+package pl.mfconsulting.java.demo.quarkus.jooq.model;
 
 import java.util.List;
 
