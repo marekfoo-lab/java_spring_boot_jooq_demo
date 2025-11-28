@@ -1,42 +1,41 @@
 databaseChangeLog:
-
   # ACCOUNT: ManyToMany ROLE, OneToMany ADDRESS, OneToOne ?
   - changeSet:
       id: 092524-01
       author: marekfoo-lab
       changes:
         - createSequence:
-            sequenceName: account_id_seq
+            sequenceName: ACCOUNT_ID_SEQ
             startValue: 1
             incrementBy: 1
         - createTable:
-            tableName: account
+            tableName: ACCOUNT
             columns:
               - column:
-                  name: id
+                  name: ID
                   type: INT
                   constraints:
                     primaryKey: true
-                  defaultValueComputed: "nextval('account_id_seq')"
+                  defaultValueComputed: "nextval('ACCOUNT_ID_SEQ')"
               - column:
-                  name: login
+                  name: LOGIN
                   type: VARCHAR(30)
                   constraints:
                     nullable: false
                     unique: true
               - column:
-                  name: first_name
+                  name: FIRST_NAME
                   type: VARCHAR(50)
               - column:
-                  name: last_name
+                  name: LAST_NAME
                   type: VARCHAR(70)
               - column:
-                  name: password
+                  name: PASSWORD
                   type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
-                  name: email
+                  name: EMAIL
                   type: VARCHAR(60)
                   constraints:
                     nullable: false
@@ -55,7 +54,7 @@ databaseChangeLog:
             tableName: ADDRESS
             columns:
               - column:
-                  name: id
+                  name: ID
                   type: INT
                   constraints:
                     primaryKey: true

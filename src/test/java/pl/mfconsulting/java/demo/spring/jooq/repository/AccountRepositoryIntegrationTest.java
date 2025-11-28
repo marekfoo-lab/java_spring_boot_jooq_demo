@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.mfconsulting.java.demo.spring.jooq.SpringJooqApplication;
 import pl.mfconsulting.java.demo.spring.jooq.model.AccountDT;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.ACCOUNT;
-import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.ADDRESS;
+import static pl.mfconsulting.java.demo.spring.jooq.generated.Tables.*;
 
 @SpringBootTest(classes = SpringJooqApplication.class)
 @ActiveProfiles("test")
@@ -34,17 +34,33 @@ class AccountRepositoryIntegrationTest {
     @BeforeEach
     @Transactional
     void setupTestData() {
+        dsl.deleteFrom(ROLE_ACCOUNT).execute();
+        dsl.deleteFrom(ROLE).execute();
+        dsl.deleteFrom(LOGIN_HISTORY).execute();
         dsl.deleteFrom(ADDRESS).execute();
         dsl.deleteFrom(ACCOUNT).execute();
 
-        dsl.execute("ALTER SEQUENCE account_id_seq RESTART WITH 1");
+        dsl.execute("ALTER SEQUENCE ACCOUNT_ID_SEQ RESTART WITH 1");
         dsl.execute("ALTER SEQUENCE ADDRESS_ID_SEQ RESTART WITH 1");
+        dsl.execute("ALTER SEQUENCE ROLE_ID_SEQ RESTART WITH 1");
+        dsl.execute("ALTER SEQUENCE LOGIN_HISTORY_ID_SEQ RESTART WITH 1");
 
         createUser("login1", "name1", "surname1", "mail1");
         createUser("login2", "name2", "surname2", "mail2");
 
         createAddress("street1", "zip1", "city1", "type1");
         createAddress("street2", "zip2", "city2", "type2");
+
+        createRole("role1");
+        createRole("role2");
+
+        addRoleToUser(1, 1);
+        addRoleToUser(2, 2);
+
+
+        addLoginHistory(1, "192.168.0.1", LocalDateTime.now(), "1");
+        addLoginHistory(1, "192.168.0.1", LocalDateTime.now(), "2");
+        addLoginHistory(2, "192.168.0.1", LocalDateTime.now(), "1");
     }
 
     @Test
@@ -169,6 +185,28 @@ class AccountRepositoryIntegrationTest {
                 .set(ACCOUNT.LAST_NAME, lastName)
                 .set(ACCOUNT.PASSWORD, DEFAULT_PASS)
                 .set(ACCOUNT.EMAIL, email)
+                .execute();
+    }
+
+    private void createRole(String roleName) {
+        dsl.insertInto(ROLE)
+                .set(ROLE.NAME, roleName)
+                .execute();
+    }
+
+    private void addRoleToUser(Integer userId, Integer roleId) {
+        dsl.insertInto(ROLE_ACCOUNT)
+                .set(ROLE_ACCOUNT.ACCOUNT_ID, userId)
+                .set(ROLE_ACCOUNT.ROLE_ID, roleId)
+                .execute();
+    }
+
+    private void addLoginHistory(Integer userId, String ipAddress, LocalDateTime lastLogin, String isSuccess) {
+        dsl.insertInto(LOGIN_HISTORY)
+                .set(LOGIN_HISTORY.ACCOUNT_ID, userId)
+                .set(LOGIN_HISTORY.LAST_LOGIN, lastLogin)
+                .set(LOGIN_HISTORY.IP_ADDRESS, ipAddress)
+                .set(LOGIN_HISTORY.IS_SUCCESS, isSuccess)
                 .execute();
     }
 }
