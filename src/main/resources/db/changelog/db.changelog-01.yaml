@@ -1,48 +1,47 @@
 databaseChangeLog:
-
-  # ChangeSet: 092524-01 (Tabela ACCOUNT)
+  # ACCOUNT: ManyToMany ROLE, OneToMany ADDRESS, OneToOne ?
   - changeSet:
       id: 092524-01
       author: marekfoo-lab
       changes:
         - createSequence:
-            sequenceName: account_id_seq
+            sequenceName: ACCOUNT_ID_SEQ
             startValue: 1
             incrementBy: 1
         - createTable:
-            tableName: account
+            tableName: ACCOUNT
             columns:
               - column:
-                  name: id
+                  name: ID
                   type: INT
                   constraints:
                     primaryKey: true
-                  defaultValueComputed: "nextval('account_id_seq')"
+                  defaultValueComputed: "nextval('ACCOUNT_ID_SEQ')"
               - column:
-                  name: login
+                  name: LOGIN
                   type: VARCHAR(30)
                   constraints:
                     nullable: false
                     unique: true
               - column:
-                  name: first_name
+                  name: FIRST_NAME
                   type: VARCHAR(50)
               - column:
-                  name: last_name
+                  name: LAST_NAME
                   type: VARCHAR(70)
               - column:
-                  name: password
+                  name: PASSWORD
                   type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
-                  name: email
+                  name: EMAIL
                   type: VARCHAR(60)
                   constraints:
                     nullable: false
                     unique: true
 
-  # ChangeSet: 092524-03 (Tabela ADDRESS)
+  # ADDRESS: ManyToOne USER
   - changeSet:
       id: 092524-03
       author: marekfoo-lab
@@ -55,7 +54,7 @@ databaseChangeLog:
             tableName: ADDRESS
             columns:
               - column:
-                  name: id
+                  name: ID
                   type: INT
                   constraints:
                     primaryKey: true
@@ -83,7 +82,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-  # ChangeSet: 092524-05 (Klucz Obcy ADDRESS -> ACCOUNT)
+  # FK for ADDRESS -> ACCOUNT
   - changeSet:
       id: 092524-05
       author: marekfoo-lab
@@ -95,7 +94,7 @@ databaseChangeLog:
             referencedColumnNames: ID
             constraintName: FK_ADDRESS_ACCOUNT
 
-  # ChangeSet: 092524-06 (Unikalność ADDRESS)
+  # Unique ADDRESS TYPE
   - changeSet:
       id: 092524-06
       author: marekfoo-lab
@@ -105,7 +104,7 @@ databaseChangeLog:
             columnNames: ACCOUNT_ID, ADDRESS_TYPE
             constraintName: UQ_ADDRESS_TYPE_ACCOUNT
 
-  # ChangeSet: 092524-07 (Tabela ROLE)
+  # ROLE: ManyToMany User
   - changeSet:
       id: 092524-07
       author: marekfoo-lab
@@ -131,7 +130,7 @@ databaseChangeLog:
                     nullable: false
                     unique: true
 
-  # ChangeSet: 092524-08 (Tabela ROLE_ACCOUNT)
+  # ROLE_ACCOUNT
   - changeSet:
       id: 092524-08
       author: marekfoo-lab
@@ -150,7 +149,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-  # ChangeSet: 092524-09 (Klucz Główny ROLE_ACCOUNT)
+  # PK: ROLE_ACCOUNT
   - changeSet:
       id: 092524-09
       author: marekfoo-lab
@@ -160,7 +159,7 @@ databaseChangeLog:
             constraintName: PK_ROLE_ACCOUNT
             tableName: ROLE_ACCOUNT
 
-  # ChangeSet: 092524-10 (Klucz Obcy ROLE_ACCOUNT -> ROLE)
+  # FK: ROLE_ACCOUNT -> ROLE
   - changeSet:
       id: 092524-10
       author: marekfoo-lab
@@ -172,7 +171,7 @@ databaseChangeLog:
             referencedColumnNames: ID
             constraintName: FK_ROLE_ACCOUNT_ROLE
 
-  # ChangeSet: 092524-11 (Tabela LOGIN_HISTORY)
+  # LOGIN_HISTORY: ManyToOne USER
   - changeSet:
       id: 092524-11
       author: marekfoo-lab
@@ -212,7 +211,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-  # ChangeSet: 092524-12 (Klucz Obcy LOGIN_HISTORY -> ACCOUNT)
+  # FK: LOGIN_HISTORY -> ACCOUNT
   - changeSet:
       id: 092524-12
       author: marekfoo-lab
