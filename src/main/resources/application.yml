@@ -8,6 +8,9 @@ spring:
     user: sa
     password:
   datasource:
+#    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/myappdb}
+#    username=${SPRING_DATASOURCE_USERNAME:myuser}
+#    password=${SPRING_DATASOURCE_PASSWORD:mypassword}
     url: jdbc:h2:tcp://localhost:9123/./data/devdb;MODE=PostgreSQL
     driver-class-name: org.h2.Driver
     username: sa

@@ -24,3 +24,30 @@ databaseChangeLog:
             (2,'street2','zipcode2','city2','home');
             INSERT INTO ADDRESS(ACCOUNT_ID, STREET, ZIP_CODE, CITY, ADDRESS_TYPE) VALUES
             (3,'street3','zipcode3','city3','home3');
+  - changeSet:
+      id: 092525-03
+      author: marekfoo-lab
+      changes:
+        - sql: |
+            INSERT INTO ROLE(ID, NAME) VALUES (1,'ADMIN');
+            INSERT INTO ROLE(ID, NAME) VALUES (2,'ROLE2');
+            INSERT INTO ROLE(ID, NAME) VALUES (3,'ROLE3');
+            INSERT INTO ROLE(ID, NAME) VALUES (4,'ROLE4');
+            INSERT INTO ROLE(ID, NAME) VALUES (5,'ROLE5');
+  - changeSet:
+      id: 092525-04
+      author: marekfoo-lab
+      changes:
+        - sql: |
+            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (1,1);
+            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (2,2);
+            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (3,2);
+            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (4,3);
+  - changeSet:
+      id: 092525-05
+      author: marekfoo-lab
+      changes:
+        - sql: |
+            INSERT INTO LOGIN_HISTORY(1,ACCOUNT_ID,LAST_LOGIN,IP_ADDRESS,IS_SUCCESS) VALUES (1,1, '2025-11-28 16:55:00', '192.168.2.10', true);
+            INSERT INTO LOGIN_HISTORY(1,ACCOUNT_ID,LAST_LOGIN,IP_ADDRESS,IS_SUCCESS) VALUES (2,1, '2025-11-27 16:55:00', '192.168.2.10', true);
+            INSERT INTO LOGIN_HISTORY(1,ACCOUNT_ID,LAST_LOGIN,IP_ADDRESS,IS_SUCCESS) VALUES (3,2, '2025-11-28 16:55:00', '192.168.2.11', true);

@@ -1,0 +1,14 @@
+services:
+  postgres:
+    networks:
+      - backend-only # DB only accessible from inside
+
+  app:
+    ports:
+      - "8080:8080"  # Only app is public
+    networks:
+      - backend-only
+
+networks:
+  backend-only:
+    internal: true  # No access to Internet!
