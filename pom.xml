@@ -29,7 +29,7 @@
         <datasource.version>1.11.0</datasource.version>
         <spring.maven.plugin.version>3.5.7</spring.maven.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
-        <maven.test.plugin.version>3.5.4</maven.test.plugin.version>
+        <surefire-plugin.version>3.5.4</surefire-plugin.version>
     </properties>
 
     <dependencies>
@@ -96,7 +96,6 @@
 
     <build>
         <finalName>jooq-demo-app</finalName>
-
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -110,6 +109,24 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <!-- Maven Compiler Plugin with Lombok support -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <parameters>true</parameters>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
@@ -137,8 +154,6 @@
                     </filesets>
                 </configuration>
             </plugin>
-
-            <!-- 4. Liquibase Maven Plugin (Migracja schemy) -->
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
@@ -168,33 +183,13 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
-            <!-- Maven Compiler Plugin with Lombok support -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
-                <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-
-            <!-- 5. jOOQ Code Generation Maven Plugin -->
             <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>${jooq.version}</version>
                 <executions>
                     <execution>
-                        <id>generate-jooq-code</id>
+                        <id>generate-jooq</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
@@ -202,12 +197,18 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <jdbc>
+                        <driver>org.h2.Driver</driver>
+                        <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
+                        <user>sa</user>
+                        <password></password>
+                    </jdbc>
                     <generator>
                         <database>
+                            <name>org.jooq.meta.h2.H2Database</name>
                             <inputSchema>PUBLIC</inputSchema>
                             <includes>.*</includes>
                             <excludes>databasechangelog|databasechangeloglock</excludes>
-                            <name>org.jooq.meta.h2.H2Database</name>
                         </database>
                         <target>
                             <packageName>pl.mfconsulting.java.demo.spring.jooq.generated</packageName>
@@ -220,12 +221,6 @@
                             <fluentSetters>true</fluentSetters>
                         </generate>
                     </generator>
-                    <jdbc>
-                        <driver>org.h2.Driver</driver>
-                        <url>jdbc:h2:file:./data/devdb;MODE=PostgreSQL</url>
-                        <user>sa</user>
-                        <password></password>
-                    </jdbc>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -235,29 +230,46 @@
                     </dependency>
                 </dependencies>
             </plugin>
-<!--            JUnit tests -->
+            <!-- unit tests: mvn test-->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.test.plugin.version}</version>
+                <version>${surefire-plugin.version}</version>
                 <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+                    <systemPropertyVariables>
+                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        <maven.home>${maven.home}</maven.home>
+                    </systemPropertyVariables>
+                    <excludes>
+                        <exclude>**/*IT.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
-<!--              Integration Tests -->
+            <!-- for integration tests: mvn failsafe:integration-test-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven.test.plugin.version}</version>
+                <version>${surefire-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
+                    <systemPropertyVariables>
+                        <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        <maven.home>${maven.home}</maven.home>
+                    </systemPropertyVariables>
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>
