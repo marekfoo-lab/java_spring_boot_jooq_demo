@@ -1,5 +1,6 @@
 # java_spring_boot_jooq_demo
-Demo project with spring boot and jooq
+Demo project with spring boot and jooq. 
+Database changes are managed by liquibase.
 
 # Configuration
 ### DB access
@@ -13,7 +14,7 @@ Password:
 ### Build package
 To install wrapper: mvn wrapper:wrapper
 
-To clean old db, create new db from liquibase, generate jooq classes, compile all code run:
+To clean old db, create new db from liquibase, generate jooq classes, compile all code and execute unit tests run:
 mvn clean install
 
 Skip compilation of tests:
@@ -28,6 +29,12 @@ Update jooq classes:
 mvn jooq-codegen:generate
 Update jooq classes and compile all:
 mvn clean jooq-codegen:generate compile
+
+Build with execution of integration tests (run in memory H2):
+clean install -DskipITs=true
+
+Build with execution of unit tests only:
+clean install -DskipITs=false
 
 ### Run App
 java -jar target/jooq-demo-app.jar
