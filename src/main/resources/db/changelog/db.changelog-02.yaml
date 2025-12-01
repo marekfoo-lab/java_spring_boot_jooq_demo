@@ -4,12 +4,12 @@ databaseChangeLog:
       author: marekfoo-lab
       changes:
         - sql: |
-            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES (1,'login1', 'hotname',
-            'spotName', 'passwordek', 'admin@belo.de');
-            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES (2,'login2', 'hotname2',
-            'spotName2', 'passwordek2', 'admin2@velo.de');
-            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES (3,'login3', 'hotname3',
-            'spotName3', 'passwordek3', 'admin3@nano.de');
+            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES 
+            (1,'login1', 'hotname', 'spotName', 'passwordek', 'admin@belo.de');
+            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES 
+            (2,'login2', 'hotname2', 'spotName2', 'passwordek2', 'admin2@velo.de');
+            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES 
+            (3,'login3', 'hotname3', 'spotName3', 'passwordek3', 'admin3@nano.de');
 
   - changeSet:
       id: 092525-02

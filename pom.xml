@@ -29,6 +29,7 @@
         <datasource.version>1.11.0</datasource.version>
         <spring.maven.plugin.version>3.5.7</spring.maven.plugin.version>
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <maven.test.plugin.version>3.5.4</maven.test.plugin.version>
     </properties>
 
     <dependencies>
@@ -52,6 +53,8 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
+<!--            For time being cannot be - impl in TcpH2Server -->
+<!--            <scope>runtime</scope>-->
         </dependency>
 
         <!-- Utilities -->
@@ -232,6 +235,29 @@
                     </dependency>
                 </dependencies>
             </plugin>
+<!--            JUnit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.test.plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+<!--              Integration Tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven.test.plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>

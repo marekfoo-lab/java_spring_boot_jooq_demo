@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: java-spring-jooq
+  liquibase: #Needed for spring-boot start
+    enabled: true # true when need liquibase start with app
+    change-log: classpath:db/master.yaml
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    user: sa
+    password:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jooq:
+    sql-dialect: postgres
+  logging:
+    level:
+      org:
+        jooq: DEBUG
+        springframework:
+          jdbc: DEBUG
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+logging:
+  level:
+    org:
+      jooq:
+        tools:
+          LoggerListener: DEBUG
