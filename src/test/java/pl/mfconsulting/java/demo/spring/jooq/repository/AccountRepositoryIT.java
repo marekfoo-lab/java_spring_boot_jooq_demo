@@ -75,7 +75,7 @@ class AccountRepositoryIT extends ConfigurationOfIntegration {
     @Transactional
     void whenCreateAccountThenInsertNewAccountAndReturnGeneratedId() {
         // Given
-        AccountDT newAccount = new AccountDT(3, "new.user", "Nowy", "Użytkownik", "new@test.pl", List.of());
+        AccountDT newAccount = new AccountDT(3, "new.user", "New11", "User11", "new@test.pl", List.of());
 
         // When
         Optional<Integer> createdId = accountRepository.create(newAccount);
@@ -90,8 +90,8 @@ class AccountRepositoryIT extends ConfigurationOfIntegration {
         //Then
         assertTrue(savedInDb.isPresent(), "Account should be saved in db");
         assertEquals("new.user", savedInDb.get().login());
-        assertEquals("Nowy", savedInDb.get().firstName());
-        assertEquals("Użytkownik", savedInDb.get().lastName());
+        assertEquals("New11", savedInDb.get().firstName());
+        assertEquals("User11", savedInDb.get().lastName());
         assertEquals("new@test.pl", savedInDb.get().email());
     }
 
