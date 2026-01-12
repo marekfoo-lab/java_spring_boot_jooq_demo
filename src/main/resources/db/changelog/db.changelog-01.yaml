@@ -1,224 +1,263 @@
 databaseChangeLog:
-  # ACCOUNT: ManyToMany ROLE, OneToMany ADDRESS, OneToOne ?
+
+  # ============================================================
+  # ACCOUNT
+  # ManyToMany: role
+  # OneToMany: address
+  # OneToMany: login_history
+  # ============================================================
   - changeSet:
       id: 092524-01
       author: marekfoo-lab
       changes:
         - createSequence:
-            sequenceName: ACCOUNT_ID_SEQ
+            sequenceName: account_id_seq
             startValue: 1
             incrementBy: 1
+
         - createTable:
-            tableName: ACCOUNT
+            tableName: account
             columns:
               - column:
-                  name: ID
-                  type: INT
+                  name: id
+                  type: int
+                  defaultValueComputed: "nextval('account_id_seq')"
                   constraints:
                     primaryKey: true
-                  defaultValueComputed: "nextval('ACCOUNT_ID_SEQ')"
-              - column:
-                  name: LOGIN
-                  type: VARCHAR(30)
-                  constraints:
                     nullable: false
-                    unique: true
+
               - column:
-                  name: FIRST_NAME
-                  type: VARCHAR(50)
-              - column:
-                  name: LAST_NAME
-                  type: VARCHAR(70)
-              - column:
-                  name: PASSWORD
-                  type: VARCHAR(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: EMAIL
-                  type: VARCHAR(60)
+                  name: login
+                  type: varchar(30)
                   constraints:
                     nullable: false
                     unique: true
 
-  # ADDRESS: ManyToOne USER
+              - column:
+                  name: first_name
+                  type: varchar(50)
+
+              - column:
+                  name: last_name
+                  type: varchar(70)
+
+              - column:
+                  name: password
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: email
+                  type: varchar(60)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  # ============================================================
+  # ADDRESS (ManyToOne -> account)
+  # ============================================================
   - changeSet:
       id: 092524-03
       author: marekfoo-lab
       changes:
         - createSequence:
-            sequenceName: ADDRESS_ID_SEQ
+            sequenceName: address_id_seq
             startValue: 1
             incrementBy: 1
+
         - createTable:
-            tableName: ADDRESS
+            tableName: address
             columns:
               - column:
-                  name: ID
-                  type: INT
+                  name: id
+                  type: int
+                  defaultValueComputed: "nextval('address_id_seq')"
                   constraints:
                     primaryKey: true
                     nullable: false
-                  defaultValueComputed: "nextval('ADDRESS_ID_SEQ')"
+
               - column:
-                  name: STREET
-                  type: VARCHAR(70)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: ZIP_CODE
-                  type: VARCHAR(10)
-              - column:
-                  name: CITY
-                  type: VARCHAR(70)
-              - column:
-                  name: ADDRESS_TYPE
-                  type: VARCHAR(20)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: ACCOUNT_ID
-                  type: INT
+                  name: street
+                  type: varchar(70)
                   constraints:
                     nullable: false
 
-  # FK for ADDRESS -> ACCOUNT
+              - column:
+                  name: zip_code
+                  type: varchar(10)
+
+              - column:
+                  name: city
+                  type: varchar(70)
+
+              - column:
+                  name: address_type
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: account_id
+                  type: int
+                  constraints:
+                    nullable: false
+
   - changeSet:
       id: 092524-05
       author: marekfoo-lab
       changes:
         - addForeignKeyConstraint:
-            baseTableName: ADDRESS
-            baseColumnNames: ACCOUNT_ID
-            referencedTableName: ACCOUNT
-            referencedColumnNames: ID
-            constraintName: FK_ADDRESS_ACCOUNT
+            constraintName: fk_address_account
+            baseTableName: address
+            baseColumnNames: account_id
+            referencedTableName: account
+            referencedColumnNames: id
 
-  # Unique ADDRESS TYPE
   - changeSet:
       id: 092524-06
       author: marekfoo-lab
       changes:
         - addUniqueConstraint:
-            tableName: ADDRESS
-            columnNames: ACCOUNT_ID, ADDRESS_TYPE
-            constraintName: UQ_ADDRESS_TYPE_ACCOUNT
+            constraintName: uq_address_account_type
+            tableName: address
+            columnNames: account_id, address_type
 
-  # ROLE: ManyToMany User
+  # ============================================================
+  # ROLE
+  # ============================================================
   - changeSet:
       id: 092524-07
       author: marekfoo-lab
       changes:
         - createSequence:
-            sequenceName: ROLE_ID_SEQ
+            sequenceName: role_id_seq
             startValue: 1
             incrementBy: 1
+
         - createTable:
-            tableName: ROLE
+            tableName: role
             columns:
               - column:
-                  name: ID
-                  type: INT
+                  name: id
+                  type: int
+                  defaultValueComputed: "nextval('role_id_seq')"
                   constraints:
                     primaryKey: true
                     nullable: false
-                  defaultValueComputed: "nextval('ROLE_ID_SEQ')"
+
               - column:
-                  name: NAME
-                  type: VARCHAR(30)
+                  name: name
+                  type: varchar(30)
                   constraints:
                     nullable: false
                     unique: true
 
-  # ROLE_ACCOUNT
+  # ============================================================
+  # ROLE_ACCOUNT (ManyToMany)
+  # ============================================================
   - changeSet:
       id: 092524-08
       author: marekfoo-lab
       changes:
         - createTable:
-            tableName: ROLE_ACCOUNT
+            tableName: role_account
             columns:
               - column:
-                  name: ROLE_ID
-                  type: INT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: ACCOUNT_ID
-                  type: INT
+                  name: role_id
+                  type: int
                   constraints:
                     nullable: false
 
-  # PK: ROLE_ACCOUNT
+              - column:
+                  name: account_id
+                  type: int
+                  constraints:
+                    nullable: false
+
   - changeSet:
       id: 092524-09
       author: marekfoo-lab
       changes:
         - addPrimaryKey:
-            columnNames: ROLE_ID, ACCOUNT_ID
-            constraintName: PK_ROLE_ACCOUNT
-            tableName: ROLE_ACCOUNT
+            constraintName: pk_role_account
+            tableName: role_account
+            columnNames: role_id, account_id
 
-  # FK: ROLE_ACCOUNT -> ROLE
   - changeSet:
       id: 092524-10
       author: marekfoo-lab
       changes:
         - addForeignKeyConstraint:
-            baseTableName: ROLE_ACCOUNT
-            baseColumnNames: ROLE_ID
-            referencedTableName: ROLE
-            referencedColumnNames: ID
-            constraintName: FK_ROLE_ACCOUNT_ROLE
+            constraintName: fk_role_account_role
+            baseTableName: role_account
+            baseColumnNames: role_id
+            referencedTableName: role
+            referencedColumnNames: id
 
-  # LOGIN_HISTORY: ManyToOne USER
   - changeSet:
       id: 092524-11
       author: marekfoo-lab
       changes:
-        - createSequence:
-            sequenceName: LOGIN_HISTORY_ID_SEQ
-            startValue: 1
-            incrementBy: 1
-        - createTable:
-            tableName: LOGIN_HISTORY
-            columns:
-              - column:
-                  name: ID
-                  type: INT
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                  defaultValueComputed: "nextval('LOGIN_HISTORY_ID_SEQ')"
-              - column:
-                  name: ACCOUNT_ID
-                  type: INT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: LAST_LOGIN
-                  type: TIMESTAMP
-                  constraints:
-                    nullable: false
-              - column:
-                  name: IP_ADDRESS
-                  type: VARCHAR(39)
-                  constraints:
-                    nullable: true
-              - column:
-                  name: IS_SUCCESS
-                  type: VARCHAR(1)
-                  constraints:
-                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_role_account_account
+            baseTableName: role_account
+            baseColumnNames: account_id
+            referencedTableName: account
+            referencedColumnNames: id
 
-  # FK: LOGIN_HISTORY -> ACCOUNT
+  # ============================================================
+  # LOGIN_HISTORY (ManyToOne -> account)
+  # ============================================================
   - changeSet:
       id: 092524-12
       author: marekfoo-lab
       changes:
+        - createSequence:
+            sequenceName: login_history_id_seq
+            startValue: 1
+            incrementBy: 1
+
+        - createTable:
+            tableName: login_history
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  defaultValueComputed: "nextval('login_history_id_seq')"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: account_id
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: last_login
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: ip_address
+                  type: varchar(39)
+
+              - column:
+                  name: is_success
+                  type: boolean
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 092524-13
+      author: marekfoo-lab
+      changes:
         - addForeignKeyConstraint:
-            baseTableName: LOGIN_HISTORY
-            baseColumnNames: ACCOUNT_ID
-            referencedTableName: ACCOUNT
-            referencedColumnNames: ID
-            constraintName: FK_LOGIN_HISTORY_ACCOUNT
+            constraintName: fk_login_history_account
+            baseTableName: login_history
+            baseColumnNames: account_id
+            referencedTableName: account
+            referencedColumnNames: id

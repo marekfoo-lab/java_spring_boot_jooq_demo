@@ -1,56 +1,77 @@
 databaseChangeLog:
-  - changeSet:
-      id: 092525-01
-      author: marekfoo-lab
-      changes:
-        - sql: |
-            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES 
-            (1,'login1', 'hotname', 'spotName', 'passwordek', 'admin@belo.de');
-            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES 
-            (2,'login2', 'hotname2', 'spotName2', 'passwordek2', 'admin2@velo.de');
-            INSERT INTO ACCOUNT (ID, LOGIN, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL) VALUES 
-            (3,'login3', 'hotname3', 'spotName3', 'passwordek3', 'admin3@nano.de');
 
-  - changeSet:
-      id: 092525-02
-      author: marekfoo-lab
-      changes:
-        - sql: |
-            INSERT INTO ADDRESS(ACCOUNT_ID, STREET, ZIP_CODE, CITY, ADDRESS_TYPE) VALUES
-            (1,'street1','zipcode1','city1','home');
-            INSERT INTO ADDRESS(ACCOUNT_ID, STREET, ZIP_CODE, CITY, ADDRESS_TYPE) VALUES
-            (1,'street11','zipcode11','city11','office');
-            INSERT INTO ADDRESS(ACCOUNT_ID, STREET, ZIP_CODE, CITY, ADDRESS_TYPE) VALUES
-            (2,'street2','zipcode2','city2','home');
-            INSERT INTO ADDRESS(ACCOUNT_ID, STREET, ZIP_CODE, CITY, ADDRESS_TYPE) VALUES
-            (3,'street3','zipcode3','city3','home3');
-  - changeSet:
-      id: 092525-03
-      author: marekfoo-lab
-      changes:
-        - sql: |
-            INSERT INTO ROLE(ID, NAME) VALUES (1,'ADMIN');
-            INSERT INTO ROLE(ID, NAME) VALUES (2,'ROLE2');
-            INSERT INTO ROLE(ID, NAME) VALUES (3,'ROLE3');
-            INSERT INTO ROLE(ID, NAME) VALUES (4,'ROLE4');
-            INSERT INTO ROLE(ID, NAME) VALUES (5,'ROLE5');
-  - changeSet:
-      id: 092525-04
-      author: marekfoo-lab
-      changes:
-        - sql: |
-            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (1,1);
-            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (2,2);
-            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (3,2);
-            INSERT INTO ROLE_ACCOUNT(ROLE_ID,ACCOUNT_ID) VALUES (4,3);
-  - changeSet:
-      id: 092525-05
-      author: marekfoo-lab
-      changes:
-        - sql: |
-            INSERT INTO LOGIN_HISTORY(ID,ACCOUNT_ID,LAST_LOGIN,IP_ADDRESS,IS_SUCCESS) 
-            VALUES (1,1, '2025-11-28 16:55:00', '192.168.2.10', 1);
-            INSERT INTO LOGIN_HISTORY(ID,ACCOUNT_ID,LAST_LOGIN,IP_ADDRESS,IS_SUCCESS) 
-            VALUES (2,1, '2025-11-27 16:55:00', '192.168.2.10', 1);
-            INSERT INTO LOGIN_HISTORY(ID,ACCOUNT_ID,LAST_LOGIN,IP_ADDRESS,IS_SUCCESS) 
-            VALUES (3,2, '2025-11-28 16:55:00', '192.168.2.11', 1);
+    # ============================================================
+    # ACCOUNT – test data
+    # ============================================================
+    - changeSet:
+          id: 092525-01
+          author: marekfoo-lab
+          context: test
+          changes:
+              - sql: |
+                    insert into account (id, login, first_name, last_name, password, email) values
+                    (1, 'login1', 'hotname',  'spotname',  'passwordek',  'admin@belo.de'),
+                    (2, 'login2', 'hotname2', 'spotname2', 'passwordek2', 'admin2@velo.de'),
+                    (3, 'login3', 'hotname3', 'spotname3', 'passwordek3', 'admin3@nano.de');
+
+    # ============================================================
+    # ADDRESS – test data
+    # ============================================================
+    - changeSet:
+          id: 092525-02
+          author: marekfoo-lab
+          context: test
+          changes:
+              - sql: |
+                    insert into address (account_id, street, zip_code, city, address_type) values
+                    (1, 'street1',  'zipcode1',  'city1',  'home'),
+                    (1, 'street11', 'zipcode11', 'city11', 'office'),
+                    (2, 'street2',  'zipcode2',  'city2',  'home'),
+                    (3, 'street3',  'zipcode3',  'city3',  'home3');
+
+    # ============================================================
+    # ROLE – test data
+    # ============================================================
+    - changeSet:
+          id: 092525-03
+          author: marekfoo-lab
+          context: test
+          changes:
+              - sql: |
+                    insert into role (id, name) values
+                    (1, 'ADMIN'),
+                    (2, 'ROLE2'),
+                    (3, 'ROLE3'),
+                    (4, 'ROLE4'),
+                    (5, 'ROLE5');
+
+    # ============================================================
+    # ROLE_ACCOUNT – test data
+    # ============================================================
+    - changeSet:
+          id: 092525-04
+          author: marekfoo-lab
+          context: test
+          changes:
+              - sql: |
+                    insert into role_account (role_id, account_id) values
+                    (1, 1),
+                    (2, 2),
+                    (3, 2),
+                    (4, 3);
+
+    # ============================================================
+    # LOGIN_HISTORY – test data
+    # ============================================================
+    - changeSet:
+          id: 092525-05
+          author: marekfoo-lab
+          context: test
+          changes:
+              - sql: |
+                    insert into login_history
+                      (id, account_id, last_login, ip_address, is_success)
+                    values
+                      (1, 1, timestamp '2025-11-28 16:55:00', '192.168.2.10', true),
+                      (2, 1, timestamp '2025-11-27 16:55:00', '192.168.2.10', true),
+                      (3, 2, timestamp '2025-11-28 16:55:00', '192.168.2.11', true);
